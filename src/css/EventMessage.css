@@ -1,0 +1,124 @@
+.event-message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.event-message-overlay.visible {
+  opacity: 1;
+}
+
+.event-message-overlay.hidden {
+  opacity: 0;
+}
+
+.event-message {
+  background-color: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.event-message.visible {
+  transform: translateY(0);
+}
+
+.event-message.hidden {
+  transform: translateY(20px);
+}
+
+.event-message.positive {
+  border-top: 5px solid #4caf50;
+}
+
+.event-message.negative {
+  border-top: 5px solid #e91e63;
+}
+
+.event-message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.event-message-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.positive .event-message-header h3 {
+  color: #4caf50;
+}
+
+.negative .event-message-header h3 {
+  color: #e91e63;
+}
+
+.event-close-btn {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.event-message-body {
+  padding: 20px;
+}
+
+.event-message-body p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1.1rem;
+}
+
+.event-message-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eee;
+}
+
+.event-message-footer button {
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.positive .event-message-footer button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.negative .event-message-footer button {
+  background-color: #e91e63;
+  color: white;
+}
+
+.event-message-footer button:hover {
+  opacity: 0.9;
+}

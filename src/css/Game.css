@@ -1,0 +1,51 @@
+.game-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+  max-width: 1200px; /* Ensure enough width for the grid layout */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calendar-container {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.stats-panel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 0; /* Allows grid items to shrink below min-content if needed */
+}
+
+.actions-container {
+  grid-column: 1;
+  grid-row: 2;
+  padding: 15px;
+  background-color: #f0f8ff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.calendar {
+  background-color: #e8f5e9;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure proper layout for App container */
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

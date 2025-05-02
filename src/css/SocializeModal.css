@@ -1,0 +1,225 @@
+.socialize-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.socialize-modal-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.socialize-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #4caf50;
+  color: white;
+}
+
+.socialize-modal-header h3 {
+  margin: 0;
+  color: white;
+  border: none;
+  padding: 0;
+}
+
+.socialize-modal-body {
+  padding: 20px;
+}
+
+.socialize-prompt {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.activity-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.activity-button {
+  position: relative; /* Required for absolute positioning of the warning icon */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  padding: 12px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100px;
+  text-align: center;
+}
+
+.activity-button:hover {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activity-button.selected {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+.activity-name {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.activity-details {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+.energy-cost {
+  color: #e91e63;
+}
+
+.bond-increase {
+  color: #4caf50;
+}
+
+.activity-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.activity-button.selected:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.discovery-message {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f1f8e9;
+  border-radius: 6px;
+  text-align: center;
+  color: #2e7d32;
+  border: 1px solid #c5e1a5;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.discovery-message p {
+  margin: 0;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bond-status {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.positive-bond {
+  color: #4caf50;
+}
+
+.negative-bond {
+  color: #e91e63;
+}
+
+/* Remove or modify these styles */
+
+/* We no longer need special styling for liked/disliked buttons before selection */
+.activity-button.liked,
+.activity-button.disliked {
+  /* Remove specific styling that would reveal preferences */
+  border-color: #ddd;
+  background-color: #f1f1f1;
+}
+
+.activity-button.liked:hover,
+.activity-button.liked.selected,
+.activity-button.disliked:hover,
+.activity-button.disliked.selected {
+  /* Standardize hover effects */
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+/* Remove the warning icon that would reveal dislikes */
+.activity-button.disliked::before {
+  content: none;
+}
+
+/* Add or keep these styles for after selection */
+.activity-button.selected {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+/* Style reaction messages appropriately */
+.reaction-message.like {
+  background-color: #f1f8e9;
+  color: #2e7d32;
+  border: 1px solid #c5e1a5;
+}
+
+.reaction-message.dislike {
+  background-color: #fce4ec;
+  color: #c2185b;
+  border: 1px solid #f48fb1;
+}
+
+.reaction-message.neutral {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+.reaction-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.bond-effect.negative {
+  color: #e91e63;
+  font-weight: bold;
+}
+
+.activity-button.disliked .bond-effect {
+  color: #e91e63;
+  font-weight: bold;
+}

@@ -1,0 +1,103 @@
+.calendar-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.calendar-info {
+  text-align: right;
+}
+
+.calendar-info p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.calendar-day-name {
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.calendar-day-name.weekend {
+  color: #ff5722;
+  background-color: #fff3e0;
+}
+
+.calendar-day {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: default;
+  font-size: 0.9rem;
+  border: 1px solid #e9ecef;
+}
+
+.calendar-day.weekend {
+  background-color: #fff3e0;
+  color: #ff5722;
+}
+
+.calendar-day.empty {
+  background-color: transparent;
+  border: none;
+}
+
+.calendar-day.current {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.end-day-btn {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.end-day-btn:hover {
+  background-color: #f57c00;
+}
+
+.weekend-label {
+  color: #ff5722;
+  font-weight: bold;
+}

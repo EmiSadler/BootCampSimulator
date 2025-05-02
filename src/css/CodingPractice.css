@@ -1,0 +1,173 @@
+.coding-practice-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.coding-practice-container {
+  width: 90%;
+  max-width: 900px;
+  height: 80%;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.coding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #3f51b5;
+  color: white;
+}
+
+.coding-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.challenge-description {
+  padding: 15px 20px;
+  background-color: #e8eaf6;
+  border-bottom: 1px solid #c5cae9;
+}
+
+.challenge-description p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.challenge-difficulty {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 8px;
+  text-align: right;
+}
+
+.challenge-difficulty span {
+  background-color: #e3f2fd;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.code-editor {
+  flex: 1;
+  padding: 10px;
+  background-color: #2d2d2d;
+}
+
+.code-editor textarea {
+  width: 100%;
+  height: 100%;
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  border: none;
+  resize: none;
+  padding: 10px;
+  outline: none;
+}
+
+.terminal {
+  height: 150px;
+  background-color: #1e1e1e;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-header {
+  padding: 5px 10px;
+  background-color: #333;
+  color: #ddd;
+  font-size: 0.8rem;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #111;
+}
+
+.terminal-content {
+  flex: 1;
+  padding: 10px;
+  color: #ddd;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  overflow-y: auto;
+}
+
+.terminal-command {
+  color: #8bc34a;
+  margin-bottom: 5px;
+}
+
+.terminal-output {
+  color: #f1f1f1;
+  white-space: pre-wrap;
+}
+
+.terminal-output.success {
+  color: #4caf50;
+}
+
+.terminal-prompt {
+  color: #888;
+  font-style: italic;
+}
+
+.success-message {
+  color: #4caf50;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.coding-actions {
+  display: flex;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-top: 1px solid #ddd;
+  gap: 10px;
+}
+
+.coding-actions button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.coding-actions button:nth-child(2) {
+  background-color: #ff9800;
+}
+
+.coding-actions button:nth-child(3) {
+  background-color: #f44336;
+}
+
+.coding-actions button:hover {
+  opacity: 0.9;
+}
