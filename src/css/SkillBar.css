@@ -18,3 +18,31 @@
   border-radius: 3px;
   transition: width 0.3s ease;
 }
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.decay-warning {
+  color: #f44336;
+  font-size: 0.85rem;
+  animation: pulse 2s infinite;
+}
+
+.skill-progress.decay-risk {
+  background-color: #ff9800;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}

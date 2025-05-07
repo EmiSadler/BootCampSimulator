@@ -54,7 +54,7 @@
 }
 
 .activity-button {
-  position: relative; /* Required for absolute positioning of the warning icon */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,39 +154,25 @@
   color: #e91e63;
 }
 
-/* Remove or modify these styles */
-
-/* We no longer need special styling for liked/disliked buttons before selection */
-.activity-button.liked,
-.activity-button.disliked {
-  /* Remove specific styling that would reveal preferences */
-  border-color: #ddd;
-  background-color: #f1f1f1;
-}
-
 .activity-button.liked:hover,
 .activity-button.liked.selected,
 .activity-button.disliked:hover,
 .activity-button.disliked.selected {
-  /* Standardize hover effects */
   background-color: #e8f5e9;
   border-color: #4caf50;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
 }
 
-/* Remove the warning icon that would reveal dislikes */
 .activity-button.disliked::before {
   content: none;
 }
 
-/* Add or keep these styles for after selection */
 .activity-button.selected {
   background-color: #e8f5e9;
   border-color: #4caf50;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
 }
 
-/* Style reaction messages appropriately */
 .reaction-message.like {
   background-color: #f1f8e9;
   color: #2e7d32;
@@ -222,4 +208,77 @@
 .activity-button.disliked .bond-effect {
   color: #e91e63;
   font-weight: bold;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.results-container h4 {
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+  text-align: center;
+  color: #333;
+}
+
+.activity-summary {
+  font-size: 1.05rem;
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.bond-change-summary {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+.bond-result,
+.energy-spent {
+  font-weight: 500;
+}
+
+.positive-bond {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.negative-bond {
+  color: #f44336;
+  font-weight: 600;
+}
+
+.negative-energy {
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.continue-button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.continue-button:hover {
+  background-color: #303f9f;
+  transform: translateY(-2px);
+}
+
+.continue-button:active {
+  transform: translateY(0);
 }

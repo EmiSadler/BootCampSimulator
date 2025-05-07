@@ -8,6 +8,8 @@ import CodingPractice from "./CodingPractice";
 import SocializeModal from "./SocializeModal";
 import StudyPython from "./StudyPython";
 import EnergyModal from "./EnergyModal";
+import DaySummaryModal from "./DaySummaryModal";
+import ProcessRandomEvent from "../utils/ProcessRandomEvent";
 import {
   pickRandomPersonToSocialize,
   updateBondWithPerson,
@@ -22,9 +24,18 @@ import codingChallenges from "../data/codingChallenges";
 import { shouldTriggerEvent, getRandomEvent } from "../utils/randomEvents";
 
 function Game() {
-  // Add new state for the energy modal
   const [showEnergyModal, setShowEnergyModal] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
+  const [showDaySummaryModal, setShowDaySummaryModal] = useState(false);
+  const [daySummary, setDaySummary] = useState({
+    skillGained: 0,
+    energyLevel: 100,
+    newRelationships: 0,
+    bondsImproved: 0,
+    challengesCompleted: 0,
+    lessonsLearned: 0,
+    tip: "",
+  });
 
   // Generate random cohort on initial render
   const [socialBonds, setSocialBonds] = useState(() => {
@@ -46,9 +57,62 @@ function Game() {
   const [showStudyPython, setShowStudyPython] = useState(false);
   const [pythonStudyLevel, setPythonStudyLevel] = useState(0);
   const [eventMessage, setEventMessage] = useState(null);
+  const [lastCodingActivityDay, setLastCodingActivityDay] = useState(1); // Start at day 1
 
-  // Update the performAction function to prompt the user instead of auto-advancing
+  // Create a function to track skill gains
+  const trackSkillGain = (amount) => {
+    setDaySummary((prev) => ({
+      ...prev,
+      skillGained: prev.skillGained + amount,
+    }));
+  };
 
+  // Create a function to track bond improvements
+  const trackBondImprovement = () => {
+    setDaySummary((prev) => ({
+      ...prev,
+      bondsImproved: prev.bondsImproved + 1,
+    }));
+  };
+
+  // Track new relationships discovered
+  const trackNewRelationship = () => {
+    setDaySummary((prev) => ({
+      ...prev,
+      newRelationships: prev.newRelationships + 1,
+    }));
+  };
+
+  // Track coding challenges completed
+  const trackCodingChallenge = () => {
+    setDaySummary((prev) => ({
+      ...prev,
+      challengesCompleted: prev.challengesCompleted + 1,
+    }));
+  };
+
+  // Track lessons learned
+  const trackLessonLearned = () => {
+    setDaySummary((prev) => ({
+      ...prev,
+      lessonsLearned: prev.lessonsLearned + 1,
+    }));
+  };
+
+  // Add this helper function after your other tracking functions
+  const generateDaySummaryTip = () => {
+    if (energy < 30) {
+      return "Try to rest more during the day to keep your energy up!";
+    } else if (daySummary.skillGained < 5) {
+      return "Focus more on studying and coding practice to improve your skills faster.";
+    } else if (daySummary.bondsImproved === 0) {
+      return "Don't forget to socialize with your classmates to build relationships!";
+    } else {
+      return "Great job balancing your activities today!";
+    }
+  };
+
+  // Replace the performAction function with this version
   const performAction = (action) => {
     // Calculate if current day is a weekend
     const dayOfWeek = (day - 1) % 7;
@@ -61,34 +125,56 @@ function Game() {
       return;
     }
 
-    if (actionsRemaining > 0) {
-      action();
-
-      // Reduce actions remaining
-      setActionsRemaining(actionsRemaining - 1);
-
-      // If no actions remain, prompt the user to start a new day
-      if (actionsRemaining === 1) {
-        const startNewDay = window.confirm(
-          "You've used all your actions for today. Would you like to end the day now?"
-        );
-
-        if (startNewDay) {
-          nextDay();
-        }
-      }
-    } else {
-      alert("You've used all your actions for today!");
+    // Only proceed if we have actions left
+    if (actionsRemaining <= 0) {
+      setShowDaySummaryModal(true);
+      return;
     }
+
+    // Execute the action
+    action();
+
+    // Update energy level in summary
+    setDaySummary((prev) => ({
+      ...prev,
+      energyLevel: energy,
+    }));
+
+    // We'll decrement actionsRemaining in the specific action handlers
+    // Don't decrement here since some actions might fail (e.g., not enough energy)
   };
 
+  // Replace the practiceCoding function
   const practiceCoding = () => {
     if (energy >= 10) {
       setCodingSkill(codingSkill + 5);
       setEnergy(energy - 10);
+      trackSkillGain(5);
+
+      // Directly decrement actions here
+      const newActionsRemaining = actionsRemaining - 1;
+      setActionsRemaining(newActionsRemaining);
+
+      // Check for day summary
+      if (newActionsRemaining <= 0) {
+        // Prepare day summary
+        let tip = "Great job practicing your coding skills!";
+        setDaySummary((prev) => ({
+          ...prev,
+          energyLevel: energy - 10,
+          skillGained: prev.skillGained + 5,
+          tip: tip,
+        }));
+
+        // Show modal
+        setShowDaySummaryModal(true);
+      }
+
+      return true; // Action succeeded
     } else {
-      alert("You're too tired! You need to rest.");
-      return; // Don't count as an action if they can't do it
+      setCurrentActivity("coding");
+      setShowEnergyModal(true);
+      return false; // Action failed
     }
   };
 
@@ -112,8 +198,40 @@ function Game() {
     setEnergy(Math.min(energy + 20, 100));
   };
 
+  const applySkillDecay = (currentDay) => {
+    // Only apply decay if it's been more than 1 day since last coding activity
+    const daysSinceActivity = currentDay - lastCodingActivityDay;
+
+    if (daysSinceActivity > 1) {
+      // Calculate decay amount: 1 point per day of inactivity, but never below zero
+      const decayAmount = Math.min(codingSkill, daysSinceActivity);
+
+      if (decayAmount > 0) {
+        setCodingSkill((prevSkill) => Math.max(0, prevSkill - decayAmount));
+
+        return {
+          occurred: true,
+          amount: decayAmount,
+        };
+      }
+    }
+
+    return {
+      occurred: false,
+      amount: 0,
+    };
+  };
+
   const nextDay = () => {
+    // Hide all modals first
+    setShowDaySummaryModal(false);
+    setShowEnergyModal(false);
+
     const newDay = day + 1;
+
+    // Apply skill decay before updating the day
+    const decayResult = applySkillDecay(newDay);
+
     setDay(newDay);
 
     // Calculate day of week (0-6, where 0 is Monday in our bootcamp calendar)
@@ -136,6 +254,20 @@ function Game() {
     if (!isWeekend) {
       processRandomEvent();
     }
+
+    // Reset day summary for the new day - add decay info if applicable
+    setDaySummary({
+      skillGained: 0,
+      energyLevel: energy,
+      newRelationships: 0,
+      bondsImproved: 0,
+      challengesCompleted: 0,
+      lessonsLearned: 0,
+      skillDecayed: decayResult.occurred ? decayResult.amount : 0,
+      tip: decayResult.occurred
+        ? `You lost ${decayResult.amount} coding skill points due to lack of practice.`
+        : "",
+    });
   };
 
   // Update the handleEndDay function to include random weekend events
@@ -177,6 +309,10 @@ function Game() {
           // Give a coding skill bonus but still tired
           const skillBonus = Math.floor(Math.random() * 6) + 5; // 5-10 skill points
           setCodingSkill(codingSkill + skillBonus);
+
+          // Update last coding activity day since they practiced on the weekend
+          setLastCodingActivityDay(newDay);
+
           alert(
             `You spent the weekend working on a personal coding project. You gained ${skillBonus} coding skill points, but you're starting the week a bit tired.`
           );
@@ -189,6 +325,9 @@ function Game() {
           setEnergy(Math.min(energy + 25, 75)); // Some recovery but capped at 75
         }
       }
+
+      // Apply skill decay after weekend
+      applySkillDecay(newDay);
     } else {
       // Just end the current day
       nextDay();
@@ -220,39 +359,53 @@ function Game() {
     setShowCodingPractice(true);
   };
 
-  // Update the handleCodingComplete function
+  // Then update the handleCodingComplete function
   const handleCodingComplete = () => {
     // Only update stats if the modal is actually shown
     if (showCodingPractice) {
+      // Add skill points and track progress
       setCodingSkill(codingSkill + 5);
-      setEnergy(Math.max(0, energy - 10));
-      setActionsRemaining(actionsRemaining - 1);
+      trackSkillGain(5);
+      trackCodingChallenge();
 
-      // Increment the coding challenge level for next time
+      // Update last coding activity day
+      setLastCodingActivityDay(day);
+
+      // Reduce energy
+      setEnergy(Math.max(0, energy - 10));
+
+      // IMPORTANT: Only reduce actions here since we know the action succeeded
+      const newActionsRemaining = actionsRemaining - 1;
+      setActionsRemaining(newActionsRemaining);
+
+      // Update the challenge level
       setCodingChallengeLevel((prevLevel) => {
-        // Cap at the maximum number of challenges
         const nextLevel = prevLevel + 1;
-        // If we've completed all challenges, loop back to a slightly harder version
         if (nextLevel >= codingChallenges.length) {
-          return 0; // Loop back to the beginning
+          return 0;
         }
         return nextLevel;
       });
 
-      // If no actions remain, prompt to advance to the next day
-      if (actionsRemaining === 1) {
-        setTimeout(() => {
-          const startNewDay = window.confirm(
-            "You've used all your actions for today. Would you like to end the day now?"
-          );
+      // Check if we're out of actions AFTER updating actionsRemaining
+      if (newActionsRemaining <= 0) {
+        // Update energy in the summary
+        setDaySummary((prev) => ({
+          ...prev,
+          energyLevel: Math.max(0, energy - 10),
+        }));
 
-          if (startNewDay) {
-            nextDay();
-          }
-        }, 500);
+        const tip = generateDaySummaryTip();
+
+        setDaySummary((prev) => ({
+          ...prev,
+          tip: tip,
+        }));
+
+        setShowDaySummaryModal(true);
       }
 
-      // Close the modal after completion
+      // Close the modal
       setShowCodingPractice(false);
     }
   };
@@ -292,83 +445,99 @@ function Game() {
     setShowSocializeModal(true);
   };
 
-  // Update the handleSocializeComplete function
+  // Update the handleSocializeComplete function, focusing on lines 475-490
+
   const handleSocializeComplete = (activity, discoveredInfo, bondResult) => {
-    if (selectedPerson && activity) {
-      // Double-check if the player has enough energy for this activity
-      if (energy >= activity.energyCost) {
-        // Update the bond with this person using the calculated bond change
-        const updatedBonds = updateBondWithPerson(
-          cohortData.bonds,
-          selectedPerson.name,
-          bondResult.bondChange // This can be positive or negative
-        );
+    // First, prevent the function from executing if the modal is not shown
+    if (!showSocializeModal || !selectedPerson || !activity) return;
 
-        // Update the cohort data
-        setCohortData({
-          ...cohortData,
-          bonds: updatedBonds,
-        });
+    // Immediately close the modal to prevent multiple triggers
+    setShowSocializeModal(false);
 
-        // Update discovered information if provided
-        if (discoveredInfo) {
-          setDiscoveredInfo((prevState) => {
-            const personInfo = prevState[selectedPerson.name] || {};
-            return {
-              ...prevState,
-              [selectedPerson.name]: {
-                ...personInfo,
-                [discoveredInfo.attribute]: true,
-              },
-            };
-          });
-        }
+    // Double-check if the player has enough energy for this activity
+    if (energy >= activity.energyCost) {
+      // Update the bond with this person using the calculated bond change
+      const updatedBonds = updateBondWithPerson(
+        cohortData.bonds,
+        selectedPerson.name,
+        bondResult.bondChange // This can be positive or negative
+      );
 
-        // Reduce energy
-        setEnergy(Math.max(0, energy - activity.energyCost));
+      // Update the cohort data
+      setCohortData({
+        ...cohortData,
+        bonds: updatedBonds,
+      });
 
-        // Use up an action
-        setActionsRemaining(actionsRemaining - 1);
-
-        // If no actions remain, prompt to advance to the next day
-        if (actionsRemaining === 1) {
-          setTimeout(() => {
-            const startNewDay = window.confirm(
-              "You've used all your actions for today. Would you like to end the day now?"
-            );
-
-            if (startNewDay) {
-              nextDay();
-            }
-          }, 500);
-        }
-      } else {
-        // Show alert and close the modal if there's not enough energy
-        alert("You don't have enough energy for this activity!");
+      // Track bond improvement if positive
+      if (bondResult.bondChange > 0) {
+        trackBondImprovement();
       }
+
+      // Update discovered information if provided
+      if (discoveredInfo) {
+        setDiscoveredInfo((prevState) => {
+          const personInfo = prevState[selectedPerson.name] || {};
+          return {
+            ...prevState,
+            [selectedPerson.name]: {
+              ...personInfo,
+              [discoveredInfo.attribute]: true,
+            },
+          };
+        });
+        trackNewRelationship();
+      }
+
+      // Reduce energy
+      setEnergy(Math.max(0, energy - activity.energyCost));
+
+      const newActionsRemaining = actionsRemaining - 1;
+      setActionsRemaining(newActionsRemaining);
+
+      // If no actions remain, show the day summary modal
+      if (newActionsRemaining <= 0) {
+        setDaySummary((prev) => ({
+          ...prev,
+          energyLevel: Math.max(0, energy - activity.energyCost),
+        }));
+        setShowDaySummaryModal(true);
+      }
+    } else {
+      // Show alert if there's not enough energy
+      alert("You don't have enough energy for this activity!");
     }
 
-    // Close the modal
-    setTimeout(() => {
-      setShowSocializeModal(false);
-      setSelectedPerson(null);
-    }, 1500);
+    // Reset the selected person state - do this immediately, not in a timeout
+    setSelectedPerson(null);
   };
 
   const handleRest = () => {
+    // Increase energy
     setEnergy(Math.min(energy + 20, 100));
-    setActionsRemaining(actionsRemaining - 1);
+
+    // Reduce actions
+    const newActionsRemaining = actionsRemaining - 1;
+    setActionsRemaining(newActionsRemaining);
+
+    // Close energy modal
     setShowEnergyModal(false);
 
-    // If resting gives enough energy for the activity, allow it to continue
-    if (currentActivity === "coding" && energy + 20 >= 10) {
-      setShowCodingPractice(true);
-    } else if (currentActivity === "study" && energy + 20 >= 5) {
-      setShowStudyPython(true);
-    } else if (currentActivity === "socialize" && energy + 20 >= 3) {
-      // Assuming 3 is the minimum energy for socializing
-      handleSocialize();
+    // If we're out of actions, show the day summary
+    if (newActionsRemaining <= 0) {
+      setDaySummary((prev) => ({
+        ...prev,
+        energyLevel: Math.min(energy + 20, 100),
+        tip: "Great job taking time to rest!",
+      }));
+
+      setTimeout(() => {
+        setShowDaySummaryModal(true);
+      }, 100);
     }
+
+    // Reset current activity
+    setCurrentActivity(null);
   };
 
   const handleStudyPython = () => {
@@ -395,35 +564,65 @@ function Game() {
     setShowStudyPython(true);
   };
 
+  // Update the handleStudyComplete function with similar logic
   const handleStudyComplete = () => {
     if (showStudyPython) {
       // Studying gives less skill than practice but uses less energy
       setCodingSkill(codingSkill + 3);
-      setEnergy(Math.max(0, energy - 5));
-      setActionsRemaining(actionsRemaining - 1);
+      trackSkillGain(3);
+      trackLessonLearned();
 
-      // Increment the Python study level for next time
+      // Update last coding activity day
+      setLastCodingActivityDay(day);
+
+      // Reduce energy
+      setEnergy(Math.max(0, energy - 5));
+
+      // IMPORTANT: Only reduce actions here
+      const newActionsRemaining = actionsRemaining - 1;
+      setActionsRemaining(newActionsRemaining);
+
+      // Increment the Python study level
       setPythonStudyLevel((prevLevel) => {
-        // Cap at the maximum number of lessons
         const nextLevel = prevLevel + 1;
-        // If we've completed all lessons, loop back to beginning
         if (nextLevel >= 12) {
           return 0;
         }
         return nextLevel;
       });
 
-      // If no actions remain, prompt to advance to the next day
-      if (actionsRemaining === 1) {
-        setTimeout(() => {
-          const startNewDay = window.confirm(
-            "You've used all your actions for today. Would you like to end the day now?"
-          );
+      // Check if we're out of actions AFTER updating actionsRemaining
+      if (newActionsRemaining <= 0) {
+        // Update energy level in summary
+        setDaySummary((prev) => ({
+          ...prev,
+          energyLevel: Math.max(0, energy - 5),
+        }));
 
-          if (startNewDay) {
-            nextDay();
-          }
-        }, 500);
+        // Generate tip
+        let tip = "";
+        if (energy < 30) {
+          tip = "Try to rest more during the day to keep your energy up!";
+        } else if (daySummary.skillGained < 5) {
+          tip =
+            "Focus more on studying and coding practice to improve your skills faster.";
+        } else if (daySummary.bondsImproved === 0) {
+          tip =
+            "Don't forget to socialize with your classmates to build relationships!";
+        } else {
+          tip = "Great job balancing your activities today!";
+        }
+
+        // Update the tip
+        setDaySummary((prev) => ({
+          ...prev,
+          tip: tip,
+        }));
+
+        // Show the modal BEFORE closing the study modal
+        setTimeout(() => {
+          setShowDaySummaryModal(true);
+        }, 100);
       }
 
       // Close the modal
@@ -431,68 +630,68 @@ function Game() {
     }
   };
 
-  const processRandomEvent = () => {
-    // Only trigger events on weekdays (not weekends)
-    const dayOfWeek = (day - 1) % 7;
-    const isWeekend = dayOfWeek >= 5;
+  // const processRandomEvent = () => {
+  //   // Only trigger events on weekdays (not weekends)
+  //   const dayOfWeek = (day - 1) % 7;
+  //   const isWeekend = dayOfWeek >= 5;
 
-    if (isWeekend) return;
+  //   if (isWeekend) return;
 
-    // Check if an event should trigger (30% chance by default)
-    if (shouldTriggerEvent()) {
-      const event = getRandomEvent();
+  //   // Check if an event should trigger (30% chance by default)
+  //   if (shouldTriggerEvent()) {
+  //     const event = getRandomEvent();
 
-      // Show an alert box for the random event
-      alert(`${event.name}: ${event.description}`);
+  //     // Show an alert box for the random event
+  //     alert(`${event.name}: ${event.description}`);
 
-      // Apply event effects
-      if (event.effect.actionsLost === "all") {
-        // Lose all actions for the day
-        setActionsRemaining(0);
-      } else {
-        // Lose (or gain) a specific number of actions
-        const newActions = Math.max(
-          0,
-          actionsRemaining - event.effect.actionsLost
-        );
-        setActionsRemaining(newActions);
-      }
+  //     // Apply event effects
+  //     if (event.effect.actionsLost === "all") {
+  //       // Lose all actions for the day
+  //       setActionsRemaining(0);
+  //     } else {
+  //       // Lose (or gain) a specific number of actions
+  //       const newActions = Math.max(
+  //         0,
+  //         actionsRemaining - event.effect.actionsLost
+  //       );
+  //       setActionsRemaining(newActions);
+  //     }
 
-      // Apply energy changes
-      setEnergy(Math.max(0, Math.min(100, energy + event.effect.energyChange)));
+  //     // Apply energy changes
+  //     setEnergy(Math.max(0, Math.min(100, energy + event.effect.energyChange)));
 
-      // Apply coding skill changes
-      setCodingSkill(codingSkill + event.effect.skillChange);
+  //     // Apply coding skill changes
+  //     setCodingSkill(codingSkill + event.effect.skillChange);
 
-      // Apply social bond changes
-      if (event.effect.bondsChange !== 0) {
-        if (event.effect.bondsChangeType === "all") {
-          // Apply to all cohort members
-          const updatedBonds = {};
-          Object.keys(cohortData.bonds).forEach((name) => {
-            const currentBond = cohortData.bonds[name];
-            const newBond = Math.max(
-              -100,
-              Math.min(100, currentBond + event.effect.bondsChange)
-            );
-            updatedBonds[name] = newBond;
-          });
+  //     // Apply social bond changes
+  //     if (event.effect.bondsChange !== 0) {
+  //       if (event.effect.bondsChangeType === "all") {
+  //         // Apply to all cohort members
+  //         const updatedBonds = {};
+  //         Object.keys(cohortData.bonds).forEach((name) => {
+  //           const currentBond = cohortData.bonds[name];
+  //           const newBond = Math.max(
+  //             -100,
+  //             Math.min(100, currentBond + event.effect.bondsChange)
+  //           );
+  //           updatedBonds[name] = newBond;
+  //         });
 
-          setCohortData({
-            ...cohortData,
-            bonds: updatedBonds,
-          });
-        }
-      }
+  //         setCohortData({
+  //           ...cohortData,
+  //           bonds: updatedBonds,
+  //         });
+  //       }
+  //     }
 
-      // Set event message (still keep the modal for visual appeal)
-      setEventMessage({
-        title: event.name,
-        description: event.description,
-        type: event.type,
-      });
-    }
-  };
+  //     // Set event message (still keep the modal for visual appeal)
+  //     setEventMessage({
+  //       title: event.name,
+  //       description: event.description,
+  //       type: event.type,
+  //     });
+  //   }
+  // };
 
   return (
     <div className="game-container">
@@ -504,7 +703,10 @@ function Game() {
 
       <div className="stats-panel">
         <EnergyBar energy={energy} />
-        <CodingSkill codingSkill={codingSkill} />
+        <CodingSkill
+          codingSkill={codingSkill}
+          daysSinceActivity={day - lastCodingActivityDay}
+        />
         <SocialBondBar
           socialBonds={cohortData.bonds}
           cohortMembers={cohortData.members}
@@ -548,6 +750,17 @@ function Game() {
       {/* Add the energy modal */}
       {showEnergyModal && (
         <EnergyModal onClose={handleRest} onStartNewDay={handleEndDay} />
+      )}
+
+      {/* Day Summary Modal */}
+      {showDaySummaryModal && (
+        <DaySummaryModal
+          onStartNewDay={() => {
+            setShowDaySummaryModal(false);
+            handleEndDay();
+          }}
+          daySummary={daySummary}
+        />
       )}
     </div>
   );

@@ -39,7 +39,7 @@ export const randomEvents = [
     type: "negative",
     rarity: "common", // 15% chance
     effect: {
-      actionsLost: 1,
+      actionsLost: 2,
       energyChange: -10,
       skillChange: 0,
       bondsChange: 0,
@@ -65,7 +65,7 @@ export const randomEvents = [
     type: "negative",
     rarity: "uncommon", // 10% chance
     effect: {
-      actionsLost: 1,
+      actionsLost: 3,
       energyChange: -10,
       skillChange: 0,
       bondsChange: 0,
@@ -94,7 +94,7 @@ export const randomEvents = [
     type: "negative",
     rarity: "uncommon", // 10% chance
     effect: {
-      actionsLost: 1,
+      actionsLost: 2,
       energyChange: -10,
       skillChange: 0,
       bondsChange: 0,

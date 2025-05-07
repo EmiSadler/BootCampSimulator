@@ -10,6 +10,7 @@ function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {
   const [activities, setActivities] = useState([]);
   const [discoveredInfo, setDiscoveredInfo] = useState(null);
   const [reaction, setReaction] = useState(null);
+  const [showResults, setShowResults] = useState(false);
 
   // Generate 4 random activities when the modal opens
   useEffect(() => {
@@ -92,11 +93,18 @@ function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {
     const bondResult = calculateBondChange(person, activity);
     setReaction(bondResult);
 
-    // Complete the socialization with the selected activity
-    setTimeout(() => {
-      // Pass the discovered info and bond change to the parent component
-      onComplete(activity, newDiscovery, bondResult);
-    }, 800);
+    // Show results instead of automatically completing
+    setShowResults(true);
+
+    // Do NOT automatically complete with setTimeout anymore
+  };
+
+  // New function for handling the close button
+  const handleResultsClose = () => {
+    // Only now complete the socialization when the user clicks the button
+    if (selectedActivity) {
+      onComplete(selectedActivity, discoveredInfo, reaction);
+    }
   };
 
   return (
@@ -110,61 +118,103 @@ function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {
         </div>
 
         <div className="socialize-modal-body">
-          <p className="socialize-prompt">
-            What would you like to do with {person.name}?
-          </p>
-
-          <div className="bond-status">
-            Current Bond:{" "}
-            <span
-              className={
-                person.bondValue < 0 ? "negative-bond" : "positive-bond"
-              }
-            >
-              {person.bondValue}
-            </span>
-          </div>
-
-          <div className="activity-options">
-            {activities.map((activity) => {
-              return (
-                <button
-                  key={activity.id}
-                  className={`activity-button ${
-                    selectedActivity === activity ? "selected" : ""
-                  }`}
-                  onClick={() => handleActivityClick(activity)}
-                  disabled={selectedActivity !== null}
-                >
-                  <span className="activity-name">{activity.name}</span>
-                  <div className="activity-details">
-                    <span className="energy-cost">
-                      Energy: -{activity.energyCost}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {reaction && (
-            <div className={`reaction-message ${reaction.reaction}`}>
-              <p>{reaction.message}</p>
-              {reaction.reaction === "dislike" && (
-                <p className="extra-warning">
-                  <strong>Be careful!</strong> Some activities can damage your
-                  relationship.
-                </p>
-              )}
-            </div>
-          )}
-
-          {discoveredInfo && (
-            <div className="discovery-message">
-              <p>
-                You learned that {person.name}'s {discoveredInfo.attribute} is "
-                {discoveredInfo.value}"!
+          {!showResults ? (
+            // Show activity selection when not showing results
+            <>
+              <p className="socialize-prompt">
+                What would you like to do with {person.name}?
               </p>
+
+              <div className="bond-status">
+                Current Bond:{" "}
+                <span
+                  className={
+                    person.bondValue < 0 ? "negative-bond" : "positive-bond"
+                  }
+                >
+                  {person.bondValue}
+                </span>
+              </div>
+
+              <div className="activity-options">
+                {activities.map((activity) => {
+                  return (
+                    <button
+                      key={activity.id}
+                      className={`activity-button ${
+                        selectedActivity === activity ? "selected" : ""
+                      }`}
+                      onClick={() => handleActivityClick(activity)}
+                      disabled={selectedActivity !== null}
+                    >
+                      <span className="activity-name">{activity.name}</span>
+                      <div className="activity-details">
+                        <span className="energy-cost">
+                          Energy: -{activity.energyCost}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            // Show results after activity selection
+            <div className="results-container">
+              <h4>Activity Results</h4>
+
+              <div className="activity-summary">
+                You chose to <strong>{selectedActivity.name}</strong> with{" "}
+                {person.name}.
+              </div>
+
+              {reaction && (
+                <div className={`reaction-message ${reaction.reaction}`}>
+                  <p>{reaction.message}</p>
+                  {reaction.reaction === "dislike" && (
+                    <p className="extra-warning">
+                      <strong>Be careful!</strong> Some activities can damage
+                      your relationship.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {discoveredInfo && (
+                <div className="discovery-message">
+                  <p>
+                    You learned that {person.name}'s {discoveredInfo.attribute}{" "}
+                    is "{discoveredInfo.value}"!
+                  </p>
+                </div>
+              )}
+
+              <div className="bond-change-summary">
+                <div className="bond-result">
+                  Bond Change:{" "}
+                  <span
+                    className={
+                      reaction.bondChange >= 0
+                        ? "positive-bond"
+                        : "negative-bond"
+                    }
+                  >
+                    {reaction.bondChange >= 0 ? "+" : ""}
+                    {reaction.bondChange}
+                  </span>
+                </div>
+
+                <div className="energy-spent">
+                  Energy Spent:{" "}
+                  <span className="negative-energy">
+                    -{selectedActivity.energyCost}
+                  </span>
+                </div>
+              </div>
+
+              <button className="continue-button" onClick={handleResultsClose}>
+                Continue
+              </button>
             </div>
           )}
         </div>

@@ -188,34 +188,20 @@
   }
 }
 
-/* Add these styles to your SocialBondBar.css file */
-
-/* Update these styles to show different color gradients */
-
-/* Bond value colors */
 .bond-value.negative {
-  color: #e91e63; /* Bright pink/red for negative values */
+  color: #e91e63;
 }
 
 .bond-value.positive {
-  color: #4caf50; /* Green for positive values */
+  color: #4caf50;
 }
 
-/* Bond progress bar colors */
 .bond-progress.negative {
-  background: linear-gradient(
-    90deg,
-    #ffc107,
-    #e91e63
-  ); /* Yellow to red for negative */
+  background: linear-gradient(90deg, #ffc107, #e91e63);
 }
 
 .bond-progress.positive {
-  background: linear-gradient(
-    90deg,
-    #ffc107,
-    #4caf50
-  ); /* Yellow to green for positive */
+  background: linear-gradient(90deg, #ffc107, #4caf50);
 }
 
 .relationship-status.negative {
@@ -226,13 +212,12 @@
   color: #4caf50;
 }
 
-/* Bond item background colors */
 .bond-item.negative-bond {
-  background-color: #fff8f8; /* Slight red tint */
+  background-color: #fff8f8;
 }
 
 .bond-item.positive-bond {
-  background-color: #f8fff8; /* Slight green tint */
+  background-color: #f8fff8;
 }
 
 .bond-item.negative-bond:hover {
@@ -243,7 +228,6 @@
   box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
 }
 
-/* Modal header colors */
 .member-modal-header.negative {
   background-color: #e91e63;
 }
@@ -252,7 +236,6 @@
   background-color: #4caf50;
 }
 
-/* Detail value colors */
 .detail-value.negative {
   color: #e91e63;
 }
@@ -268,8 +251,6 @@
 .detail-value.dislikes {
   color: #e91e63;
 }
-
-/* Add these styles to your SocialBondBar.css file */
 
 .member-preferences {
   margin-top: 15px;
@@ -299,7 +280,7 @@
 
 .preferences-column {
   flex: 1;
-  min-width: 0; /* Helps with text overflow */
+  min-width: 0;
 }
 
 .preferences-list {

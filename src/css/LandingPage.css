@@ -11,7 +11,6 @@
   overflow: hidden;
 }
 
-/* Logo sizing fixes */
 .logo-container {
   margin-bottom: 2rem;
   max-width: 100%;
@@ -20,12 +19,11 @@
 }
 
 .landing-logo {
-  width: 180px; /* Reduced from default size */
+  width: 180px;
   height: auto;
   object-fit: contain;
 }
 
-/* Hero Section */
 .landing-hero {
   display: flex;
   padding: 60px 40px;
@@ -39,11 +37,11 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Left-align content */
+  align-items: flex-start;
 }
 
 .landing-hero h1 {
-  font-size: 2.6rem; /* Slightly reduced */
+  font-size: 2.6rem;
   font-weight: 800;
   color: #2d3748;
   margin-bottom: 20px;
@@ -70,7 +68,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 14px rgba(55, 118, 171, 0.3);
-  align-self: flex-start; /* Ensure button aligns with text */
+  align-self: flex-start;
 }
 
 .cta-button:hover {
@@ -84,7 +82,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 20px; /* Add space between content and image */
+  padding-left: 20px;
 }
 
 .hero-screenshot {
@@ -114,34 +112,33 @@
   margin: 0;
 }
 
-/* Value Proposition Section */
 .value-section {
-  padding: 70px 40px; /* Slightly reduced padding */
+  padding: 70px 40px;
   text-align: center;
 }
 
 .value-section h2 {
-  font-size: 2.2rem; /* Slightly reduced */
+  font-size: 2.2rem;
   font-weight: 700;
   color: #2d3748;
-  margin-bottom: 40px; /* Reduced from 50px */
+  margin-bottom: 40px;
 }
 
 .value-grid {
   display: flex;
   justify-content: center;
   gap: 30px;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  flex-wrap: wrap;
 }
 
 .value-card {
   background-color: white;
   border-radius: 12px;
-  padding: 25px; /* Slightly reduced padding */
+  padding: 25px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   text-align: center;
   flex: 1;
-  min-width: 250px; /* Set minimum width instead of max */
+  min-width: 250px;
   max-width: 300px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -152,7 +149,7 @@
 }
 
 .value-icon {
-  font-size: 2.5rem; /* Slightly reduced */
+  font-size: 2.5rem;
   margin-bottom: 15px;
 }
 
@@ -169,7 +166,6 @@
   line-height: 1.6;
 }
 
-/* Features Tabs Section */
 .features-section {
   padding: 40px;
   background-color: #f8fafc;
@@ -180,7 +176,7 @@
   justify-content: center;
   border-bottom: 2px solid #e2e8f0;
   margin-bottom: 40px;
-  flex-wrap: wrap; /* Allow wrapping if needed */
+  flex-wrap: wrap;
 }
 
 .tab-button {
@@ -228,25 +224,25 @@
 
 .tab-text {
   flex: 1;
-  min-width: 0; /* Prevent overflow */
+  min-width: 0;
 }
 
 .tab-image {
   flex: 1;
   display: flex;
   justify-content: center;
-  min-width: 0; /* Prevent overflow */
+  min-width: 0;
 }
 
 .tab-text h2 {
-  font-size: 1.8rem; /* Reduced size */
+  font-size: 1.8rem;
   font-weight: 700;
   color: #2d3748;
   margin-bottom: 20px;
 }
 
 .tab-text p {
-  font-size: 1.05rem; /* Slightly reduced */
+  font-size: 1.05rem;
   color: #4a5568;
   line-height: 1.6;
   margin-bottom: 25px;
@@ -266,14 +262,14 @@
 
 .feature-icon {
   font-size: 1.5rem;
-  flex-shrink: 0; /* Prevent icon from shrinking */
+  flex-shrink: 0;
 }
 
 .feature-illustration,
 .calendar-illustration {
   width: 100%;
-  max-width: 380px; /* Slightly reduced */
-  height: 280px; /* Slightly reduced */
+  max-width: 380px;
+  height: 280px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -283,13 +279,9 @@
   overflow: hidden;
 }
 
-/* Activity Cards */
 .activity-cards {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(220px, 1fr)
-  ); /* Responsive grid */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
   margin-top: 30px;
 }
@@ -345,18 +337,16 @@
   color: #2196f3;
 }
 
-/* Calendar Preview - Fixed height to prevent overflow */
 .calendar-preview {
   width: 100%;
   height: 100%;
-  max-height: 280px; /* Match illustration height */
+  max-height: 280px;
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
 }
 
-/* Simulator Preview */
 .simulator-preview {
   width: 100%;
   height: 100%;
@@ -385,7 +375,6 @@
   font-size: 0.9rem;
 }
 
-/* Calendar Preview */
 .calendar-preview {
   width: 100%;
   height: 100%;
@@ -441,7 +430,6 @@
   background-color: #fff8e1;
 }
 
-/* Learning Section */
 .learning-content {
   text-align: center;
 }
@@ -555,7 +543,6 @@
   margin: 0;
 }
 
-/* Testimonials Section */
 .testimonials-section {
   padding: 80px 40px;
   background: linear-gradient(120deg, #f8f9ff 0%, #eef1ff 100%);
@@ -653,7 +640,6 @@
   line-height: 1.6;
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 1024px) {
   .landing-hero {
     flex-direction: column;
@@ -663,7 +649,7 @@
   .hero-content {
     text-align: center;
     margin-bottom: 40px;
-    align-items: center; /* Center content on smaller screens */
+    align-items: center;
   }
 
   .landing-hero h1 {
@@ -678,11 +664,11 @@
   }
 
   .cta-button {
-    align-self: center; /* Center button on smaller screens */
+    align-self: center;
   }
 
   .hero-image {
-    padding-left: 0; /* Remove left padding on smaller screens */
+    padding-left: 0;
   }
 
   .value-grid {
@@ -732,7 +718,7 @@
   }
 
   .landing-logo {
-    width: 150px; /* Further reduce on mobile */
+    width: 150px;
   }
 
   .topics-grid {
@@ -752,7 +738,7 @@
     width: 100%;
     text-align: center;
     border-bottom: 1px solid #e2e8f0;
-    padding: 12px 15px; /* Smaller padding */
+    padding: 12px 15px;
   }
 
   .tab-button.active::after {
@@ -788,7 +774,7 @@
   .features-section,
   .testimonials-section,
   .final-cta {
-    padding: 30px 15px; /* Further reduced padding */
+    padding: 30px 15px;
   }
 
   .landing-hero h1 {
@@ -796,7 +782,7 @@
   }
 
   .landing-logo {
-    width: 120px; /* Even smaller for very small screens */
+    width: 120px;
   }
 
   .topics-grid {
@@ -805,15 +791,15 @@
 
   .cta-button {
     width: 100%;
-    padding: 12px 20px; /* Slightly smaller */
+    padding: 12px 20px;
   }
 
   .testimonial-card {
-    padding: 20px; /* Smaller padding */
+    padding: 20px;
   }
 
   .feature-illustration,
   .calendar-illustration {
-    height: 220px; /* Even smaller height */
+    height: 220px;
   }
 }

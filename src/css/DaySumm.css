@@ -1,0 +1,152 @@
+.day-summary-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.day-summary-modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+.day-summary-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #3f51b5;
+  color: white;
+}
+
+.day-summary-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.day-summary-body {
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.day-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #3f51b5;
+}
+
+.day-summary-body h3 {
+  margin: 0 0 20px;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.summary-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.summary-value {
+  font-weight: 600;
+}
+
+.summary-value.positive {
+  color: #4caf50;
+}
+
+.summary-value.negative {
+  color: #f44336;
+  font-weight: 600;
+}
+
+.summary-value.neutral {
+  color: #2196f3;
+}
+
+.day-tip {
+  background-color: #e8eaf6;
+  padding: 12px;
+  border-radius: 6px;
+  color: #3f51b5;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.day-summary-footer {
+  display: flex;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+}
+
+.next-day-button {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  font-size: 1rem;
+}
+
+.next-day-button:hover {
+  background-color: #303f9f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .day-summary-modal {
+    width: 95%;
+  }
+
+  .summary-item {
+    font-size: 0.9rem;
+  }
+}
