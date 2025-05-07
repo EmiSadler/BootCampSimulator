@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../css/LandingPage.css";
+import TestimonialCard from "./LandingPage/TestimonialCard";
 
 function LandingPage({ onStartGame }) {
   const [activeTab, setActiveTab] = useState("intro");
@@ -309,58 +310,29 @@ function LandingPage({ onStartGame }) {
       </div>
 
       {/* Testimonials Section */}
-      <div className="testimonials-section">
+      <section className="testimonials-section">
         <h2>What Our Users Say</h2>
         <div className="testimonials-grid">
-          <div className="testimonial-card">
-            <div className="testimonial-rating">★★★★★</div>
-            <p className="testimonial-text">
-              "I tried many ways to learn Python, but Bootcamp Simulator made it
-              stick by combining theory with actual practice in a fun, engaging
-              way."
-            </p>
-            <div className="testimonial-author">
-              <div className="author-avatar">JS</div>
-              <div className="author-info">
-                <div className="author-name">Jamie S.</div>
-                <div className="author-title">Self-taught Developer</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="testimonial-card">
-            <div className="testimonial-rating">★★★★★</div>
-            <p className="testimonial-text">
-              "The social aspect makes learning much more fun. I love how the
-              game simulates the ups and downs of an actual coding bootcamp
-              experience."
-            </p>
-            <div className="testimonial-author">
-              <div className="author-avatar">AT</div>
-              <div className="author-info">
-                <div className="author-name">Alex T.</div>
-                <div className="author-title">CS Student</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="testimonial-card">
-            <div className="testimonial-rating">★★★★★</div>
-            <p className="testimonial-text">
-              "The progressive difficulty of challenges kept me motivated to
-              improve. I went from zero Python knowledge to building my own
-              projects!"
-            </p>
-            <div className="testimonial-author">
-              <div className="author-avatar">MP</div>
-              <div className="author-info">
-                <div className="author-name">Morgan P.</div>
-                <div className="author-title">Career Changer</div>
-              </div>
-            </div>
-          </div>
+          <TestimonialCard
+            name="John S."
+            review="This is a review"
+            role="Junior Engineer"
+            avatar="JS"
+          />
+          <TestimonialCard
+            name="Lily C."
+            review="I tried many ways to learn Python, but Bootcamp Simulator made it stick by combining theory with actual practice in a fun, engaging way."
+            role="Self-taught Developer"
+            avatar="LC"
+          />
+          <TestimonialCard
+            name="Mark K."
+            review="I love the gamified approach! It keeps me motivated to learn and practice every day."
+            role="Self-taught Developer"
+            avatar="MK"
+          />
         </div>
-      </div>
+      </section>
 
       {/* Final CTA Section */}
       <div className="final-cta">
