@@ -9,7 +9,7 @@ import SocializeModal from "./SocializeModal";
 import StudyPython from "./StudyPython";
 import EnergyModal from "./EnergyModal";
 import DaySummaryModal from "./DaySummaryModal";
-import ProcessRandomEvent from "../utils/ProcessRandomEvent";
+import processRandomEvent from "../utils/processRandomEvent";
 import {
   pickRandomPersonToSocialize,
   updateBondWithPerson,
