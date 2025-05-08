@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../css/LandingPage.css";
 import TestimonialCard from "./LandingPage/TestimonialCard";
+import Calendar from "./Calendar";
 
 function LandingPage({ onStartGame }) {
   const [activeTab, setActiveTab] = useState("intro");
@@ -204,31 +205,7 @@ function LandingPage({ onStartGame }) {
                   </div>
                 </div>
                 <div className="tab-image">
-                  <div className="calendar-illustration">
-                    {/* Calendar visualization */}
-                    <div className="calendar-preview">
-                      <div className="cal-header">April 2025</div>
-                      <div className="cal-days">
-                        <div className="weekend">S</div>
-                        <div>M</div>
-                        <div>T</div>
-                        <div>W</div>
-                        <div>T</div>
-                        <div>F</div>
-                        <div className="weekend">S</div>
-                      </div>
-                      <div className="cal-grid">
-                        {/* Just visual representation */}
-                        <div className="cal-day weekend">14</div>
-                        <div className="cal-day">15</div>
-                        <div className="cal-day current">16</div>
-                        <div className="cal-day">17</div>
-                        <div className="cal-day">18</div>
-                        <div className="cal-day">19</div>
-                        <div className="cal-day weekend">20</div>
-                      </div>
-                    </div>
-                  </div>
+                  <Calendar page="LandingPage" />
                 </div>
               </div>
             </div>

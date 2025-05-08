@@ -1,7 +1,7 @@
 import "../css/Calendar.css";
 import { useState, useEffect } from "react";
 
-function Calendar({ day, actionsRemaining, onEndDay }) {
+function Calendar({ day, actionsRemaining, onEndDay, page }) {
   // Calculate current month based on game day
   // Assuming game starts on day 1 of month 1 (Monday)
   const monthNames = [

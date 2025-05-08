@@ -12,7 +12,7 @@ This repo contains one application:
 
 ### Try it yourself:
 
-Link to render
+[Link to netlify](https://bootcampsim.netlify.app/)
 
 ### Features
 
