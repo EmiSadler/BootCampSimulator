@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../css/SocializeModal.css";
+import "../../css/SocializeModal.css";
 import {
   possibleActivities,
   calculateBondChange,

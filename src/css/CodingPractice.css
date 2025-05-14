@@ -15,7 +15,7 @@
   width: 90%;
   max-width: 900px;
   height: 80%;
-  background-color: #f8f9fa;
+  background-color: #b0d7ff;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -28,7 +28,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background-color: #3f51b5;
+  background-color: #2274a5;
   color: white;
 }
 
@@ -50,7 +50,7 @@
 .challenge-description {
   padding: 15px 20px;
   background-color: #e8eaf6;
-  border-bottom: 1px solid #c5cae9;
+  border-bottom: 1px solid #b0d7ff;
 }
 
 .challenge-description p {
@@ -66,7 +66,7 @@
 }
 
 .challenge-difficulty span {
-  background-color: #e3f2fd;
+  background-color: #b0d7ff;
   padding: 3px 8px;
   border-radius: 12px;
   font-weight: bold;
@@ -84,7 +84,7 @@
   background-color: #2d2d2d;
   color: #e0e0e0;
   font-family: "Courier New", monospace;
-  font-size: 14px;
+  font-size: 20px;
   border: none;
   resize: none;
   padding: 10px;
@@ -113,7 +113,7 @@
   padding: 10px;
   color: #ddd;
   font-family: "Courier New", monospace;
-  font-size: 14px;
+  font-size: 20px;
   overflow-y: auto;
 }
 
@@ -145,7 +145,7 @@
 .coding-actions {
   display: flex;
   padding: 10px;
-  background-color: #f1f1f1;
+  background-color: #e8eaf6;
   border-top: 1px solid #ddd;
   gap: 10px;
 }

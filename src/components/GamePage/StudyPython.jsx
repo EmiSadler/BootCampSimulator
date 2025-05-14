@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../css/StudyPython.css";
+import "../../css/StudyPython.css";
 
 function StudyPython({ onComplete, onClose, currentLevel = 0 }) {
   const [currentLesson, setCurrentLesson] = useState(null);

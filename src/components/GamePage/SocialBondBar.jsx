@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../css/SocialBondBar.css";
+import "../../css/SocialBondBar.css";
 import { possibleActivities } from "../../utils/socializeUtils";
 
 function SocialBondBar({

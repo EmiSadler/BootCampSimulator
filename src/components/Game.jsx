@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import EnergyBar from "./EnergyBar";
-import CodingSkill from "./CodingSkill";
-import SocialBondBar from "./SocialBondBar";
+import EnergyBar from "./GamePage/EnergyBar";
+import CodingSkill from "./GamePage/CodingSkill";
+import SocialBondBar from "./GamePage/SocialBondBar";
 import Calendar from "./Calendar";
-import ActionsPanel from "./ActionsPanel";
-import CodingPractice from "./CodingPractice";
-import SocializeModal from "./SocializeModal";
-import StudyPython from "./StudyPython";
+import ActionsPanel from "./GamePage/ActionsPanel";
+import CodingPractice from "./GamePage/CodingPractice";
+import SocializeModal from "./GamePage/SocializeModal";
+import StudyPython from "./GamePage/StudyPython";
 import EnergyModal from "./EnergyModal";
 import DaySummaryModal from "./DaySummaryModal";
 import processRandomEvent from "../utils/processRandomEvent";
@@ -684,12 +684,10 @@ function Game() {
         />
       )}
 
-      {/* Add the energy modal */}
       {showEnergyModal && (
         <EnergyModal onClose={handleRest} onStartNewDay={handleEndDay} />
       )}
 
-      {/* Day Summary Modal */}
       {showDaySummaryModal && (
         <DaySummaryModal
           onStartNewDay={() => {

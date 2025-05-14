@@ -1,4 +1,4 @@
-import "../css/EnergyBar.css";
+import "../../css/EnergyBar.css";
 
 function EnergyBar({ energy }) {
   const totalSegments = 10;
