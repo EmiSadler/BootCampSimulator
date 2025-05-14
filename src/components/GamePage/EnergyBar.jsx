@@ -12,7 +12,7 @@ function EnergyBar({ energy }) {
 
   return (
     <div className="energy-container">
-      <p>Energy: {energy}/100</p>
+      <h3>Energy: {energy}/100</h3>
       <div className="energy-bar">
         {segments.map((status, index) => (
           <div

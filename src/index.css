@@ -2,14 +2,18 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 20px;
-  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #2274a555 25%, transparent 0%) -40px 0/
+      80px 80px,
+    linear-gradient(225deg, #2274a5 25%, transparent 0%) -40px 0/ 80px 80px,
+    linear-gradient(315deg, #2274a555 25%, transparent 0%) 0px 0/ 80px 80px,
+    linear-gradient(45deg, #2274a5 25%, #c2e1ff 0%) 0px 0/ 80px 80px;
   min-height: 100vh;
 }
 
 .App {
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #57a773;
+  background-image: linear-gradient(135deg, #57a773 0%, #157145 100%);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
@@ -80,7 +84,7 @@ li {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #b0d7ff;
+  background-color: #c2e1ff;
 }
 
 .actions-panel h1 {
@@ -108,7 +112,7 @@ li {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 20px; /* Add some space from the left edge of the screen */
+  margin-left: 20px;
 }
 
 .game-logo-container {
@@ -120,7 +124,7 @@ li {
 }
 
 .game-logo-large {
-  width: 240px;
+  width: 360px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); /* Add shadow for depth */
   transition: transform 0.3s ease; /* Smooth transition for hover effect */
@@ -134,6 +138,7 @@ li {
   width: 100%;
   margin-top: 100px; /* Add space below the logo */
   min-width: 0; /* Prevents content from overflowing */
+  font-size: 1.2rem; /* Increase font size for better readability */
 }
 
 /* Update mobile responsiveness */

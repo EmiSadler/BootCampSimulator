@@ -43,7 +43,7 @@ function SocialBondBar({
 
   return (
     <div className="social-bonds-container">
-      <h3>Social Bonds with Classmates ({sortedBonds.length})</h3>
+      <h3>Classmates ({sortedBonds.length})</h3>
 
       <div className="bonds-grid">
         {sortedBonds.map(([name, bond]) => {

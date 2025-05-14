@@ -13,7 +13,7 @@ function LandingPage({ onStartGame }) {
         <div className="hero-content">
           <div className="logo-container">
             <img
-              src="/assets/BootCampSimLogo.png"
+              src="/assets/BootCampSimLogo2.png"
               alt="BootCamp Simulator Logo"
               className="landing-logo"
             />
