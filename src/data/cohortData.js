@@ -22,7 +22,7 @@ const possibleCohortMembers = [
     expertise: "Full-stack",
     personality: "Creative",
     hobby: "Music",
-    background: "Marketing",
+    background: "Librarian",
     likes: [],
     dislikes: [],
   },

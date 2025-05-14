@@ -3,7 +3,7 @@ import "../css/SocializeModal.css";
 import {
   possibleActivities,
   calculateBondChange,
-} from "../utils/socializeUtils";
+} from "../../utils/socializeUtils";
 
 function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {
   const [selectedActivity, setSelectedActivity] = useState(null);

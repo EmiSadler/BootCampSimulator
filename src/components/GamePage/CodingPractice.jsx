@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../css/CodingPractice.css";
-import codingChallenges from "../data/codingChallenges";
-import { verifySolution } from "../utils/codeVerifier";
+import codingChallenges from "../../data/codingChallenges";
+import { verifySolution } from "../../utils/codeVerifier";
 
 function CodingPractice({ onComplete, onClose, currentLevel = 0 }) {
   const [code, setCode] = useState("");
