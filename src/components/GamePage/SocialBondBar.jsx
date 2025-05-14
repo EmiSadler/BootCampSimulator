@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../../css/SocialBondBar.css";
-import { possibleActivities } from "../../utils/socializeUtils";
+import SocialMemberDetails from "./SocialMemberDetails";
 
 function SocialBondBar({
   socialBonds,
@@ -39,11 +39,6 @@ function SocialBondBar({
   const handleMemberClick = (name) => {
     const memberDetails = findMemberDetails(name);
     setSelectedMember(memberDetails);
-  };
-
-  // Close the modal
-  const closeModal = () => {
-    setSelectedMember(null);
   };
 
   return (
@@ -97,179 +92,15 @@ function SocialBondBar({
         })}
       </div>
 
-      {/* Modal for displaying member details */}
+      {/* Render the SocialMemberDetails component when a member is selected */}
       {selectedMember && (
-        <div className="member-modal-overlay" onClick={closeModal}>
-          <div
-            className="member-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              className={`member-modal-header ${
-                socialBonds[selectedMember.name] < 0 ? "negative" : "positive"
-              }`}
-            >
-              <h3>{selectedMember.name}</h3>
-              <button className="modal-close-btn" onClick={closeModal}>
-                ×
-              </button>
-            </div>
-
-            <div className="member-modal-body">
-              {/* Display info based on discovery state */}
-              {selectedMember.expertise &&
-              discoveredInfo[selectedMember.name]?.expertise ? (
-                <div className="member-detail">
-                  <span className="detail-label">Expertise:</span>
-                  <span className="detail-value">
-                    {selectedMember.expertise}
-                  </span>
-                </div>
-              ) : (
-                <div className="member-detail undiscovered">
-                  <span className="detail-label">Expertise:</span>
-                  <span className="detail-value">Unknown</span>
-                </div>
-              )}
-
-              {selectedMember.personality &&
-              discoveredInfo[selectedMember.name]?.personality ? (
-                <div className="member-detail">
-                  <span className="detail-label">Personality:</span>
-                  <span className="detail-value">
-                    {selectedMember.personality}
-                  </span>
-                </div>
-              ) : (
-                <div className="member-detail undiscovered">
-                  <span className="detail-label">Personality:</span>
-                  <span className="detail-value">Unknown</span>
-                </div>
-              )}
-
-              {selectedMember.hobby &&
-              discoveredInfo[selectedMember.name]?.hobby ? (
-                <div className="member-detail">
-                  <span className="detail-label">Hobby:</span>
-                  <span className="detail-value">{selectedMember.hobby}</span>
-                </div>
-              ) : (
-                <div className="member-detail undiscovered">
-                  <span className="detail-label">Hobby:</span>
-                  <span className="detail-value">Unknown</span>
-                </div>
-              )}
-
-              {selectedMember.background &&
-              discoveredInfo[selectedMember.name]?.background ? (
-                <div className="member-detail">
-                  <span className="detail-label">Background:</span>
-                  <span className="detail-value">
-                    {selectedMember.background}
-                  </span>
-                </div>
-              ) : (
-                <div className="member-detail undiscovered">
-                  <span className="detail-label">Background:</span>
-                  <span className="detail-value">Unknown</span>
-                </div>
-              )}
-
-              {/* Show relationship status and bond strength */}
-              {socialBonds[selectedMember.name] !== undefined && (
-                <>
-                  <div className="member-detail">
-                    <span className="detail-label">Bond Strength:</span>
-                    <span
-                      className={`detail-value ${
-                        socialBonds[selectedMember.name] < 0
-                          ? "negative"
-                          : "positive"
-                      }`}
-                    >
-                      {socialBonds[selectedMember.name]}/100
-                    </span>
-                  </div>
-                  <div className="member-detail">
-                    <span className="detail-label">Relationship:</span>
-                    <span
-                      className={`detail-value ${
-                        socialBonds[selectedMember.name] < 0
-                          ? "negative"
-                          : "positive"
-                      }`}
-                    >
-                      {getRelationshipStatus(socialBonds[selectedMember.name])}
-                    </span>
-                  </div>
-                </>
-              )}
-
-              {/* Display preferences if relationship is good enough or bad enough */}
-              {socialBonds[selectedMember.name] !== undefined &&
-                (socialBonds[selectedMember.name] >= 60 ||
-                  socialBonds[selectedMember.name] <= -60) &&
-                (selectedMember.likes?.length > 0 ||
-                  selectedMember.dislikes?.length > 0) && (
-                  <div className="member-preferences">
-                    <h4>Activity Preferences</h4>
-                    <div className="preferences-columns">
-                      <div className="preferences-column">
-                        <h5>Likes</h5>
-                        <ul className="preferences-list likes-list">
-                          {selectedMember.likes &&
-                          selectedMember.likes.length > 0 ? (
-                            selectedMember.likes.map((id) => {
-                              const activity = possibleActivities.find(
-                                (a) => a.id === id
-                              );
-                              return activity ? (
-                                <li
-                                  key={`like-${id}`}
-                                  className="preference-item like-item"
-                                >
-                                  {activity.name}
-                                </li>
-                              ) : null;
-                            })
-                          ) : (
-                            <li className="preference-item empty">
-                              No known likes
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                      <div className="preferences-column">
-                        <h5>Dislikes</h5>
-                        <ul className="preferences-list dislikes-list">
-                          {selectedMember.dislikes &&
-                          selectedMember.dislikes.length > 0 ? (
-                            selectedMember.dislikes.map((id) => {
-                              const activity = possibleActivities.find(
-                                (a) => a.id === id
-                              );
-                              return activity ? (
-                                <li
-                                  key={`dislike-${id}`}
-                                  className="preference-item dislike-item"
-                                >
-                                  {activity.name}
-                                </li>
-                              ) : null;
-                            })
-                          ) : (
-                            <li className="preference-item empty">
-                              No known dislikes
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
-            </div>
-          </div>
-        </div>
+        <SocialMemberDetails
+          member={selectedMember}
+          socialBonds={socialBonds}
+          discoveredInfo={discoveredInfo}
+          getRelationshipStatus={getRelationshipStatus}
+          onClose={() => setSelectedMember(null)}
+        />
       )}
     </div>
   );
