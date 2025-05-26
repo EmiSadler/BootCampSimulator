@@ -525,7 +525,7 @@ function Game() {
       // Increment the Python study level
       setPythonStudyLevel((prevLevel) => {
         const nextLevel = prevLevel + 1;
-        if (nextLevel >= 12) {
+        if (nextLevel >= 29) {
           return 0;
         }
         return nextLevel;
