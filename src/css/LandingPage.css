@@ -193,6 +193,7 @@
 
 .tab-button:hover {
   color: var(--colour-secondary);
+  background-color: var(--colour-secondary-light);
 }
 
 .tab-button.active {
@@ -553,7 +554,6 @@
   color: var(--text-muted);
 }
 
-/* Final CTA Section */
 .final-cta {
   padding: 80px 40px;
   text-align: center;
