@@ -653,11 +653,11 @@ import datetime
 
 # Current date and time
 now = datetime.datetime.now()
-print(now)  # 2023-04-27 15:30:45.123456
+print(now)  # 2025-05-31 15:30:45.123456
 
 # Creating date objects
-birthday = datetime.date(1990, 5, 15)
-print(birthday)  # 1990-05-15
+birthday = datetime.date(1991, 5, 31)
+print(birthday)  # 1991-05-31
 
 # Creating time objects
 alarm = datetime.time(7, 30, 0)  # 7:30:00
@@ -677,12 +677,514 @@ duration = end - start
 print(f"Operation took {duration.total_seconds()} seconds")
 
 # Formatting dates
-print(now.strftime("%Y-%m-%d %H:%M:%S"))  # 2023-04-27 15:30:45
-print(now.strftime("%A, %B %d, %Y"))      # Thursday, April 27, 2023
+print(now.strftime("%Y-%m-%d %H:%M:%S"))  # 2025-05-31 15:30:45
+print(now.strftime("%A, %B %d, %Y"))      # Saturday, May 31, 2025
 \`\`\`
 
 The datetime module is crucial for applications that need to work with dates, times, and time intervals.`,
       tip: "When working with international applications, be aware of timezone issues. The datetime module has timezone support, and the pytz library is useful for more advanced timezone handling.",
+    },
+    {
+      id: 21,
+      title: "Virtual Environments and Package Management",
+      content: `Python's package ecosystem is managed with pip and virtual environments:
+
+\`\`\`python
+# Creating a virtual environment
+# In terminal/command prompt:
+# python -m venv myenv
+
+# Activating the environment (Windows)
+# myenv\\Scripts\\activate
+
+# Activating the environment (macOS/Linux)
+# source myenv/bin/activate
+
+# Installing a package
+# pip install requests
+
+# Using an installed package
+import requests
+
+response = requests.get('https://api.github.com')
+print(response.status_code)  # 200 if successful
+data = response.json()
+print(data.keys())
+
+# Creating requirements.txt
+# pip freeze > requirements.txt
+
+# Installing from requirements.txt
+# pip install -r requirements.txt
+
+# Deactivating virtual environment
+# deactivate
+\`\`\`
+
+Virtual environments keep project dependencies isolated from each other and the system Python.`,
+      tip: "Always use virtual environments for your projects - it prevents dependency conflicts between different projects and makes it easy to share your project's requirements.",
+    },
+    {
+      id: 22,
+      title: "Generators and Iterators",
+      content: `Generators provide a memory-efficient way to work with large data sequences:
+
+\`\`\`python
+# Generator function using yield
+def count_up_to(max):
+    count = 1
+    while count <= max:
+        yield count
+        count += 1
+
+# Using the generator
+counter = count_up_to(5)
+print(next(counter))  # 1
+print(next(counter))  # 2
+print(next(counter))  # 3
+
+# Generators are iterators
+for number in count_up_to(3):
+    print(number)  # Prints 1, 2, 3
+
+# Generator expressions - like list comprehensions but with ()
+squared = (x**2 for x in range(1, 6))
+for num in squared:
+    print(num)  # Prints 1, 4, 9, 16, 25
+
+# Infinite sequences (use with caution!)
+def infinite_counter():
+    num = 0
+    while True:
+        yield num
+        num += 1
+
+# Take just what you need
+from itertools import islice
+first_10 = islice(infinite_counter(), 10)
+print(list(first_10))  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+\`\`\`
+
+Generators calculate values on-demand, saving memory when working with large sequences.`,
+      tip: "Unlike lists that compute and store all values in memory, generators compute values only when requested. This makes them ideal for processing large datasets or infinite sequences.",
+    },
+    {
+      id: 23,
+      title: "Context Managers with 'with' Statement",
+      content: `Context managers help manage resources properly:
+
+\`\`\`python
+# Built-in context managers for files
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!')
+# File is automatically closed after the block
+
+# Creating your own context manager using a class
+class MyContext:
+    def __init__(self, name):
+        self.name = name
+        
+    def __enter__(self):
+        print(f"Entering {self.name}")
+        return self  # This is returned as 'context'
+        
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f"Exiting {self.name}")
+        # Return True to suppress exceptions, False to propagate
+        return False
+
+# Using our custom context manager
+with MyContext("test") as context:
+    print(f"Inside the context: {context.name}")
+
+# Creating context manager using contextlib
+from contextlib import contextmanager
+
+@contextmanager
+def my_context(name):
+    print(f"Entering {name}")
+    try:
+        # Setup code - runs before the with block
+        yield name  # This value is returned as 'value'
+        # Cleanup code - runs after the with block
+    finally:
+        print(f"Exiting {name}")
+
+with my_context("test2") as value:
+    print(f"Inside the context: {value}")
+\`\`\`
+
+Context managers ensure proper resource initialization and cleanup, even if exceptions occur.`,
+      tip: "Context managers are ideal for managing resources like files, network connections, and database transactions that need proper cleanup regardless of exceptions.",
+    },
+    {
+      id: 24,
+      title: "Decorators - Modifying Function Behavior",
+      content: `Decorators allow you to modify the behavior of functions and methods:
+
+\`\`\`python
+# Simple decorator that prints function info
+def log_function(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__} with {args} and {kwargs}")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} returned {result}")
+        return result
+    return wrapper
+
+# Apply decorator with @ syntax
+@log_function
+def add(a, b):
+    return a + b
+
+# Now when we call add(), it's wrapped with the logging
+result = add(3, 5)  # Logs the call and return value
+
+# Decorator with arguments
+def repeat(times):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            results = []
+            for _ in range(times):
+                results.append(func(*args, **kwargs))
+            return results
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Alice"))  # Calls greet 3 times and returns results in a list
+
+# Real-world examples
+import time
+
+def timing_decorator(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+@timing_decorator
+def slow_function():
+    time.sleep(1)
+    return "Done"
+
+slow_function()  # Shows execution time
+\`\`\`
+
+Decorators are a powerful way to extend and modify the behavior of functions without changing their code.`,
+      tip: "Python's decorator pattern makes it easy to apply common functionality like logging, timing, authentication, and caching across many functions.",
+    },
+    {
+      id: 25,
+      title: "Functional Programming Tools",
+      content: `Python supports functional programming concepts through various built-ins and modules:
+
+\`\`\`python
+from functools import reduce
+
+numbers = [1, 2, 3, 4, 5]
+
+# map - applies a function to each item in an iterable
+squared = list(map(lambda x: x**2, numbers))
+print(squared)  # [1, 4, 9, 16, 25]
+
+# filter - selects items from an iterable based on a function
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(evens)  # [2, 4]
+
+# reduce - cumulatively applies a function to items, reducing to a single value
+sum_all = reduce(lambda x, y: x + y, numbers)
+print(sum_all)  # 15 (1+2+3+4+5)
+
+# all - returns True if all items in iterable are truthy
+print(all([True, 1, "hello"]))  # True
+print(all([True, 0, "hello"]))  # False (0 is falsy)
+
+# any - returns True if any item in iterable is truthy
+print(any([False, 0, "", "hello"]))  # True ("hello" is truthy)
+print(any([False, 0, ""]))  # False (all falsy)
+
+# sorted with key function
+words = ["apple", "banana", "cherry", "date"]
+by_length = sorted(words, key=len)  # Sort by length
+print(by_length)  # ['date', 'apple', 'banana', 'cherry']
+
+# Partial functions
+from functools import partial
+def power(base, exponent):
+    return base ** exponent
+
+square = partial(power, exponent=2)
+print(square(5))  # 25
+\`\`\`
+
+Functional programming emphasizes pure functions and immutable data.`,
+      tip: "While Python isn't a pure functional language, it offers many tools for functional programming. The key is to avoid modifying state and favor immutable data structures.",
+    },
+    {
+      id: 26,
+      title: "Asynchronous Programming with async/await",
+      content: `Asynchronous programming allows non-blocking execution of code:
+
+\`\`\`python
+import asyncio
+
+# Define an asynchronous function with 'async def'
+async def say_after(delay, message):
+    await asyncio.sleep(delay)  # Non-blocking sleep
+    print(message)
+
+# Another async function that calls other async functions
+async def main():
+    print("Start")
+    
+    # Run sequentially
+    await say_after(1, "Hello")
+    await say_after(1, "World")
+    
+    print("Sequential part done")
+    
+    # Run concurrently
+    task1 = asyncio.create_task(say_after(1, "Concurrent Hello"))
+    task2 = asyncio.create_task(say_after(1, "Concurrent World"))
+    
+    # Wait for both tasks to complete
+    await task1
+    await task2
+    
+    print("Concurrent part done")
+
+# Run the async program
+asyncio.run(main())
+
+# Handling multiple tasks
+async def gather_example():
+    results = await asyncio.gather(
+        say_after(1, "First"),
+        say_after(2, "Second"),
+        say_after(3, "Third")
+    )
+    return results
+\`\`\`
+
+Asynchronous programming is ideal for I/O-bound operations like network requests or file operations.`,
+      tip: "Use async/await for programs that need to perform multiple I/O operations concurrently without blocking. It's especially useful for web scrapers, API clients, and web servers.",
+    },
+    {
+      id: 27,
+      title: "Working with Databases in Python",
+      content: `Python can interact with various databases easily:
+
+\`\`\`python
+# SQLite - built into Python's standard library
+import sqlite3
+
+# Connect to a database (creates it if it doesn't exist)
+conn = sqlite3.connect('example.db')
+cursor = conn.cursor()
+
+# Create a table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    email TEXT UNIQUE,
+    age INTEGER
+)
+''')
+
+# Insert data
+cursor.execute('INSERT INTO users (name, email, age) VALUES (?, ?, ?)',
+              ('Alice', 'alice@example.com', 30))
+
+# Insert multiple rows
+users = [
+    ('Bob', 'bob@example.com', 25),
+    ('Charlie', 'charlie@example.com', 35)
+]
+cursor.executemany('INSERT INTO users (name, email, age) VALUES (?, ?, ?)', users)
+
+# Commit changes
+conn.commit()
+
+# Query data
+cursor.execute('SELECT * FROM users WHERE age > ?', (25,))
+results = cursor.fetchall()
+for row in results:
+    print(f"ID: {row[0]}, Name: {row[1]}, Email: {row[2]}, Age: {row[3]}")
+
+# Use column names
+cursor.execute('SELECT name, email FROM users')
+for row in cursor.fetchall():
+    name, email = row
+    print(f"{name}: {email}")
+
+# Close connection
+conn.close()
+
+# Example with context manager for automatic closing
+with sqlite3.connect('example.db') as conn:
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM users')
+    count = cursor.fetchone()[0]
+    print(f"Total users: {count}")
+\`\`\`
+
+For more complex applications, consider libraries like SQLAlchemy or Django ORM to abstract the database layer.`,
+      tip: "Always use parameterized queries (with ? or named placeholders) instead of string formatting to prevent SQL injection attacks.",
+    },
+    {
+      id: 28,
+      title: "Testing in Python with pytest",
+      content: `Writing tests is essential for reliable code. pytest makes it easy:
+
+\`\`\`python
+# File: math_functions.py
+def add(a, b):
+    return a + b
+
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
+
+# File: test_math_functions.py
+import pytest
+from math_functions import add, multiply, divide
+
+# Simple test function
+def test_add():
+    assert add(3, 5) == 8
+    assert add(-1, 1) == 0
+    assert add(0, 0) == 0
+
+# Test function with multiple assertions
+def test_multiply():
+    assert multiply(2, 3) == 6
+    assert multiply(0, 5) == 0
+    assert multiply(-2, -3) == 6
+
+# Testing for exceptions
+def test_divide_exception():
+    with pytest.raises(ValueError):
+        divide(10, 0)
+
+# Parameterized tests
+@pytest.mark.parametrize("a, b, expected", [
+    (5, 2, 2.5),
+    (10, 2, 5),
+    (1, 4, 0.25),
+])
+def test_divide(a, b, expected):
+    assert divide(a, b) == expected
+
+# Fixtures - reusable test resources
+@pytest.fixture
+def sample_data():
+    return [1, 2, 3, 4, 5]
+
+def test_with_fixture(sample_data):
+    assert len(sample_data) == 5
+    assert sum(sample_data) == 15
+\`\`\`
+
+Run tests with the pytest command in your terminal. pytest automatically discovers and runs test files that match the pattern test_*.py or *_test.py.`,
+      tip: "Write tests before implementing features (Test-Driven Development) to ensure your code meets requirements. Small, focused tests make debugging easier.",
+    },
+    {
+      id: 29,
+      title: "Python Design Patterns",
+      content: `Design patterns are reusable solutions to common software design problems:
+
+\`\`\`python
+# Singleton Pattern - ensures a class has only one instance
+class Singleton:
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(Singleton, cls).__new__(cls)
+        return cls._instance
+
+# Usage
+s1 = Singleton()
+s2 = Singleton()
+print(s1 is s2)  # True - they're the same instance
+
+# Factory Pattern - create objects without specifying exact class
+class Animal:
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+class AnimalFactory:
+    def create_animal(self, animal_type):
+        if animal_type == "dog":
+            return Dog()
+        elif animal_type == "cat":
+            return Cat()
+        else:
+            raise ValueError(f"Unknown animal type: {animal_type}")
+
+# Usage
+factory = AnimalFactory()
+dog = factory.create_animal("dog")
+print(dog.speak())  # "Woof!"
+
+# Observer Pattern - for event handling
+class Subject:
+    def __init__(self):
+        self._observers = []
+        
+    def attach(self, observer):
+        self._observers.append(observer)
+        
+    def detach(self, observer):
+        self._observers.remove(observer)
+        
+    def notify(self, message):
+        for observer in self._observers:
+            observer.update(message)
+
+class Observer:
+    def update(self, message):
+        pass
+
+class ConcreteObserver(Observer):
+    def __init__(self, name):
+        self.name = name
+        
+    def update(self, message):
+        print(f"{self.name} received: {message}")
+
+# Usage
+subject = Subject()
+observer1 = ConcreteObserver("Observer 1")
+observer2 = ConcreteObserver("Observer 2")
+
+subject.attach(observer1)
+subject.attach(observer2)
+subject.notify("Hello, observers!")
+\`\`\`
+
+Understanding common design patterns helps write better, more maintainable code.`,
+      tip: "Design patterns are useful templates, but don't force them where they don't fit. Python's dynamic nature often allows for simpler solutions than traditional design patterns used in languages like Java.",
     },
   ];
 
