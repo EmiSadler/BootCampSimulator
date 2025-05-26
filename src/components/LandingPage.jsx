@@ -283,7 +283,7 @@ function LandingPage({ onStartGame }) {
         <div className="testimonials-grid">
           <TestimonialCard
             name="John S."
-            review="This is a review"
+            review="Bootcamp Simulator transformed my Python skills! The gamified approach made learning fun and engaging. I highly recommend it to anyone looking to master coding."
             role="Junior Engineer"
             avatar="JS"
           />
