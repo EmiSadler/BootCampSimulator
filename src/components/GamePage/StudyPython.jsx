@@ -217,7 +217,7 @@ print(greet_with_time("Alex", "night")) # "Good night, Alex!"
 
 # Multiple return values (as a tuple)
 def get_user_info():
-    return "Alice", 30, "New York"  
+    return "Alice", 30, "London"  
 
 name, age, city = get_user_info()
 print(name)  # "Alice"
@@ -236,7 +236,7 @@ Functions can return values or perform actions without returning anything.`,
 person = {
     "name": "Alex",
     "age": 30,
-    "city": "New York"
+    "city": "London"
 }
 
 # Accessing values
@@ -262,7 +262,7 @@ for key, value in person.items():
 
 # Dictionary methods
 print(person.keys())    # dict_keys(['name', 'age', 'city', 'email'])
-print(person.values())  # dict_values(['Alex', 31, 'New York', 'alex@example.com'])
+print(person.values())  # dict_values(['Alex', 31, 'London', 'alex@example.com'])
 \`\`\`
 
 Dictionaries are extremely useful for representing structured data.`,
