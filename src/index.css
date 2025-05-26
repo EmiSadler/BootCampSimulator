@@ -154,32 +154,33 @@ li {
 }
 
 .game-logo-container {
-  position: fixed; /* Fixed position so it stays in place */
-  left: 20px; /* Position from left edge of viewport */
-  top: 20px; /* Position from top edge of viewport instead of center */
-  z-index: 10; /* Ensure it's above other content */
-  cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 10;
+  cursor: pointer;
+  width: 200px;
+  text-align: left;
 }
 
 .game-logo-large {
-  width: 360px;
+  width: 240px;
   height: auto;
-  filter: var(--shadow-lg);
-  transition: transform 0.3s ease; /* Smooth transition for hover effect */
+  filter: drop-shadow(var(--shadow-md));
+  transition: transform 0.3s ease;
 }
 
 .game-logo-large:hover {
-  transform: scale(1.05); /* Subtle zoom on hover */
+  transform: scale(1.05);
 }
 
 .game-content {
   width: 100%;
-  margin-top: 100px; /* Add space below the logo */
-  min-width: 0; /* Prevents content from overflowing */
-  font-size: 1.2rem; /* Increase font size for better readability */
+  margin-top: 60px;
+  min-width: 0;
+  font-size: 1.2rem;
 }
 
-/* Update mobile responsiveness */
 @media (max-width: 1100px) {
   .game-layout {
     align-items: center;
@@ -187,14 +188,14 @@ li {
   }
 
   .game-logo-container {
-    position: static; /* Remove fixed positioning on smaller screens */
+    position: static;
     margin-bottom: 20px;
     margin-top: 10px;
   }
 
   .game-content {
     width: 100%;
-    margin-top: 0; /* Remove top margin on mobile */
+    margin-top: 0;
   }
 
   .game-logo-large {
