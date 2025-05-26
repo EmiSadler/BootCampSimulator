@@ -112,7 +112,6 @@ function Game() {
     }
   };
 
-  // Replace the performAction function with this version
   const performAction = (action) => {
     // Calculate if current day is a weekend
     const dayOfWeek = (day - 1) % 7;
@@ -139,63 +138,6 @@ function Game() {
       ...prev,
       energyLevel: energy,
     }));
-
-    // We'll decrement actionsRemaining in the specific action handlers
-    // Don't decrement here since some actions might fail (e.g., not enough energy)
-  };
-
-  // Replace the practiceCoding function
-  const practiceCoding = () => {
-    if (energy >= 10) {
-      setCodingSkill(codingSkill + 5);
-      setEnergy(energy - 10);
-      trackSkillGain(5);
-
-      // Directly decrement actions here
-      const newActionsRemaining = actionsRemaining - 1;
-      setActionsRemaining(newActionsRemaining);
-
-      // Check for day summary
-      if (newActionsRemaining <= 0) {
-        // Prepare day summary
-        let tip = "Great job practicing your coding skills!";
-        setDaySummary((prev) => ({
-          ...prev,
-          energyLevel: energy - 10,
-          skillGained: prev.skillGained + 5,
-          tip: tip,
-        }));
-
-        // Show modal
-        setShowDaySummaryModal(true);
-      }
-
-      return true; // Action succeeded
-    } else {
-      setCurrentActivity("coding");
-      setShowEnergyModal(true);
-      return false; // Action failed
-    }
-  };
-
-  const socialize = () => {
-    if (energy >= 5) {
-      const cohortNames = Object.keys(socialBonds);
-      const randomPerson =
-        cohortNames[Math.floor(Math.random() * cohortNames.length)];
-      setSocialBonds({
-        ...socialBonds,
-        [randomPerson]: socialBonds[randomPerson] + 10,
-      });
-      setEnergy(energy - 5);
-    } else {
-      alert("You're too tired! You need to rest.");
-      return; // Don't count as an action if they can't do it
-    }
-  };
-
-  const rest = () => {
-    setEnergy(Math.min(energy + 20, 100));
   };
 
   const applySkillDecay = (currentDay) => {
@@ -428,7 +370,7 @@ function Game() {
       ...possibleActivities.map((a) => a.energyCost)
     );
 
-    // Check if we have enough energy for the minimum social activity
+    // Check if player has enough energy for the minimum social activity
     if (energy < minEnergyCost) {
       // Show energy modal instead of alert
       setCurrentActivity("socialize");
@@ -444,8 +386,6 @@ function Game() {
     setSelectedPerson(person);
     setShowSocializeModal(true);
   };
-
-  // Update the handleSocializeComplete function, focusing on lines 475-490
 
   const handleSocializeComplete = (activity, discoveredInfo, bondResult) => {
     // First, prevent the function from executing if the modal is not shown
@@ -591,7 +531,7 @@ function Game() {
         return nextLevel;
       });
 
-      // Check if we're out of actions AFTER updating actionsRemaining
+      // Check if player is out of actions AFTER updating actionsRemaining
       if (newActionsRemaining <= 0) {
         // Update energy level in summary
         setDaySummary((prev) => ({
@@ -600,18 +540,7 @@ function Game() {
         }));
 
         // Generate tip
-        let tip = "";
-        if (energy < 30) {
-          tip = "Try to rest more during the day to keep your energy up!";
-        } else if (daySummary.skillGained < 5) {
-          tip =
-            "Focus more on studying and coding practice to improve your skills faster.";
-        } else if (daySummary.bondsImproved === 0) {
-          tip =
-            "Don't forget to socialize with your classmates to build relationships!";
-        } else {
-          tip = "Great job balancing your activities today!";
-        }
+        let tip = generateDaySummaryTip();
 
         // Update the tip
         setDaySummary((prev) => ({
