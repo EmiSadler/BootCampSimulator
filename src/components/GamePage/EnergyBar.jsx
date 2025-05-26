@@ -1,4 +1,4 @@
-import "../css/EnergyBar.css";
+import "../../css/EnergyBar.css";
 
 function EnergyBar({ energy }) {
   const totalSegments = 10;
@@ -12,7 +12,7 @@ function EnergyBar({ energy }) {
 
   return (
     <div className="energy-container">
-      <p>Energy: {energy}/100</p>
+      <h3>Energy: {energy}/100</h3>
       <div className="energy-bar">
         {segments.map((status, index) => (
           <div

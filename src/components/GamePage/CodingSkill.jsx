@@ -1,4 +1,4 @@
-import "../css/SkillBar.css";
+import "../../css/SkillBar.css";
 
 function CodingSkill({ codingSkill, daysSinceActivity = 0 }) {
   // Calculate progress bar width based on skill level

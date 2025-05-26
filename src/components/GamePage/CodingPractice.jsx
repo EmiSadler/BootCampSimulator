@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../css/CodingPractice.css";
+import "../../css/CodingPractice.css";
 import codingChallenges from "../../data/codingChallenges";
 import { verifySolution } from "../../utils/codeVerifier";
 
@@ -38,7 +38,6 @@ function CodingPractice({ onComplete, onClose, currentLevel = 0 }) {
       // Clear previous output
       setOutput("");
 
-      // Verify the solution using our helper function
       const result = verifySolution(currentChallenge.id, code);
 
       setOutput(result.output);
@@ -58,7 +57,7 @@ function CodingPractice({ onComplete, onClose, currentLevel = 0 }) {
         // Give user time to see success message before closing
         setTimeout(() => {
           if (onComplete) onComplete();
-        }, 1500);
+        }, 3500);
       }
     } catch (error) {
       setOutput(`Error executing code: ${error.message}`);
@@ -80,7 +79,7 @@ function CodingPractice({ onComplete, onClose, currentLevel = 0 }) {
 
   return (
     <div className="coding-practice-modal">
-      <div className="coding-practice-container">
+      <main className="coding-practice-container">
         <div className="coding-header">
           <h2>{currentChallenge.title}</h2>
           <button
@@ -149,7 +148,7 @@ function CodingPractice({ onComplete, onClose, currentLevel = 0 }) {
             Show Solution
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

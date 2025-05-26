@@ -29,7 +29,7 @@ function App() {
         <div className="game-layout">
           <div className="game-logo-container" onClick={handleLogoClick}>
             <img
-              src="/assets/BootCampSimLogo.png"
+              src="/assets/BootCampSimLogo2.png"
               alt="BootCamp Simulator Logo"
               className="game-logo-large"
               title="Click to return to main menu"

@@ -13,7 +13,7 @@ function LandingPage({ onStartGame }) {
         <div className="hero-content">
           <div className="logo-container">
             <img
-              src="/assets/BootCampSimLogo.png"
+              src="/assets/BootCampSimLogo2.png"
               alt="BootCamp Simulator Logo"
               className="landing-logo"
             />
@@ -104,19 +104,10 @@ function LandingPage({ onStartGame }) {
             <div className="intro-content">
               <div className="tab-grid">
                 <div className="tab-image">
-                  <div className="feature-illustration">
-                    {/* This would be an illustration or screenshot */}
-                    <div className="simulator-preview">
-                      <div className="preview-header">Bootcamp Simulator</div>
-                      <div className="preview-content">
-                        <div className="preview-stats">
-                          <div>Coding Skill: 75%</div>
-                          <div>Energy: 80%</div>
-                          <div>Day: 15</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img
+                    src="/assets/BootCampSimScreen.png"
+                    alt="Bootcamp Illustration"
+                  />
                 </div>
                 <div className="tab-text">
                   <h2>The Bootcamp Experience, Gamified</h2>
@@ -205,7 +196,7 @@ function LandingPage({ onStartGame }) {
                   </div>
                 </div>
                 <div className="tab-image">
-                  <Calendar page="LandingPage" />
+                  <Calendar page="LandingPage" day={1} />
                 </div>
               </div>
             </div>
