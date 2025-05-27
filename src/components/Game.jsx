@@ -93,7 +93,6 @@ function Game() {
     }));
   };
 
-  // Add this helper function after your other tracking functions
   const generateDaySummaryTip = () => {
     if (energy < 30) {
       return "Try to rest more during the day to keep your energy up!";
@@ -114,7 +113,7 @@ function Game() {
       return;
     }
 
-    // Only proceed if we have actions left
+    // Only proceed if the player hass actions left
     if (actionsRemaining <= 0) {
       setShowDaySummaryModal(true);
       return;
@@ -166,6 +165,9 @@ function Game() {
 
     setDay(newDay);
 
+    // Reset actions to maximum (8) at the start of a new day
+    setActionsRemaining(8);
+
     if (isWeekend(newDay)) {
       setEnergy(Math.min(energy + 30, 100));
     }
@@ -176,7 +178,7 @@ function Game() {
         day: newDay,
         energy,
         codingSkill,
-        actionsRemaining,
+        actionsRemaining: 8, // Pass the new reset value
         cohortData,
         setEnergy,
         setCodingSkill,
@@ -255,6 +257,21 @@ function Game() {
     }
   };
 
+  // Add this shared function to check actions before performing any activity
+  const checkActionsRemaining = () => {
+    if (actionsRemaining <= 0) {
+      // No actions left, show summary and end day
+      const tip = generateDaySummaryTip();
+      setDaySummary((prev) => ({
+        ...prev,
+        tip: tip,
+      }));
+      setShowDaySummaryModal(true);
+      return false;
+    }
+    return true;
+  };
+
   const handlePracticeCoding = () => {
     if (isWeekend(day)) {
       alert(
@@ -262,6 +279,8 @@ function Game() {
       );
       return;
     }
+
+    if (!checkActionsRemaining()) return;
 
     if (energy < 10) {
       setCurrentActivity("coding");
