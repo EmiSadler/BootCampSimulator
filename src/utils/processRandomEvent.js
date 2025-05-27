@@ -10,7 +10,7 @@ const processRandomEvent = ({
   setCodingSkill,
   setActionsRemaining,
   setCohortData,
-  setEventMessage,
+  setCurrentEvent, // <-- Changed from setEventMessage
 }) => {
   const dayOfWeek = (day - 1) % 7;
   const isWeekend = dayOfWeek >= 5;
@@ -56,11 +56,7 @@ const processRandomEvent = ({
     }
 
     //event message
-    setEventMessage({
-      title: event.name,
-      description: event.description,
-      type: event.type,
-    });
+    setCurrentEvent(event);
 
     return true;
   }
