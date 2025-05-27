@@ -5,7 +5,6 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1100;
@@ -28,16 +27,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  transform: translateY(20px);
   transition: transform 0.3s ease;
-}
-
-.event-message.visible {
-  transform: translateY(0);
-}
-
-.event-message.hidden {
-  transform: translateY(20px);
 }
 
 .event-message.positive {
@@ -90,17 +80,67 @@
   font-size: 1.1rem;
 }
 
+.event-effects {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background-color: var(--bg-neutral-light);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.effect-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.effect-item.positive {
+  border-left: 3px solid var(--colour-positive);
+}
+
+.effect-item.negative {
+  border-left: 3px solid var(--colour-negative);
+}
+
+.effect-icon {
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.effect-label {
+  flex-grow: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.effect-value {
+  font-weight: bold;
+}
+
+.effect-item.positive .effect-value {
+  color: var(--colour-positive);
+}
+
+.effect-item.negative .effect-value {
+  color: var(--colour-negative);
+}
+
 .event-message-footer {
   display: flex;
   justify-content: flex-end;
   padding: 15px 20px;
-  background-color: #f8f9fa;
+  background-color: var(--bg-neutral-light);
   border-top: 1px solid #eee;
 }
 
 .event-message-footer button {
-  background-color: #ffc107;
-  color: #333;
+  background-color: var(--colour-secondary);
+  color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -109,16 +149,14 @@
   transition: background-color 0.2s;
 }
 
-.positive .event-message-footer button {
-  background-color: #4caf50;
-  color: white;
+.event-message-footer.positive button {
+  background-color: var(--colour-positive);
 }
 
-.negative .event-message-footer button {
-  background-color: #e91e63;
-  color: white;
+.event-message-footer.negative button {
+  background-color: var(--colour-negative);
 }
 
 .event-message-footer button:hover {
-  opacity: 0.9;
+  filter: brightness(1.1);
 }

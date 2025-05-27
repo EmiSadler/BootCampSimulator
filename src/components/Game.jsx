@@ -10,6 +10,7 @@ import StudyPython from "./GamePage/StudyPython";
 import EnergyModal from "./EnergyModal";
 import DaySummaryModal from "./DaySummaryModal";
 import processRandomEvent from "../utils/processRandomEvent";
+import { isWeekend } from "../utils/weekendChecker";
 import {
   pickRandomPersonToSocialize,
   updateBondWithPerson,
@@ -22,6 +23,32 @@ import {
 import "../css/Game.css";
 import codingChallenges from "../data/codingChallenges";
 import { shouldTriggerEvent, getRandomEvent } from "../utils/randomEvents";
+import EventMessage from "./EventMessage";
+
+// Create an ErrorBoundary.jsx component
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Game error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-screen">
+          Something went wrong.{" "}
+          <button onClick={() => window.location.reload()}>Restart Game</button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function Game() {
   const [showEnergyModal, setShowEnergyModal] = useState(false);
@@ -37,13 +64,6 @@ function Game() {
     tip: "",
   });
 
-  // Generate random cohort on initial render
-  const [socialBonds, setSocialBonds] = useState(() => {
-    // Get cohort data from the utility function
-    const cohortData = generateRandomCohort();
-    return cohortData.bonds;
-  });
-
   const [energy, setEnergy] = useState(100);
   const [codingSkill, setCodingSkill] = useState(0);
   const [day, setDay] = useState(1);
@@ -56,8 +76,8 @@ function Game() {
   const [codingChallengeLevel, setCodingChallengeLevel] = useState(0);
   const [showStudyPython, setShowStudyPython] = useState(false);
   const [pythonStudyLevel, setPythonStudyLevel] = useState(0);
-  const [eventMessage, setEventMessage] = useState(null);
-  const [lastCodingActivityDay, setLastCodingActivityDay] = useState(1); // Start at day 1
+  const [currentEvent, setCurrentEvent] = useState(null);
+  const [lastCodingActivityDay, setLastCodingActivityDay] = useState(1);
 
   // Create a function to track skill gains
   const trackSkillGain = (amount) => {
@@ -113,11 +133,7 @@ function Game() {
   };
 
   const performAction = (action) => {
-    // Calculate if current day is a weekend
-    const dayOfWeek = (day - 1) % 7;
-    const isWeekend = dayOfWeek >= 5;
-
-    if (isWeekend) {
+    if (isWeekend(day)) {
       alert(
         "It's the weekend! No bootcamp today. You can skip to Monday or enjoy your free time."
       );
@@ -176,28 +192,26 @@ function Game() {
 
     setDay(newDay);
 
-    // Calculate day of week (0-6, where 0 is Monday in our bootcamp calendar)
-    const dayOfWeek = (newDay - 1) % 7;
-    const isWeekend = dayOfWeek >= 5; // 5 = Saturday, 6 = Sunday
-
-    // If it's a weekend, no actions are available
-    // If it's a weekday, reset to 8 actions
-    setActionsRemaining(isWeekend ? 0 : 8);
-
-    // If it's a weekend, automatically recover more energy
-    if (isWeekend) {
+    if (isWeekend(newDay)) {
       setEnergy(Math.min(energy + 30, 100));
     }
 
-    // Clear any previous event message
-    setEventMessage(null);
-
     // Process random events for the new day (only on weekdays)
-    if (!isWeekend) {
-      processRandomEvent();
+    if (!isWeekend(newDay)) {
+      processRandomEvent({
+        day: newDay,
+        energy,
+        codingSkill,
+        actionsRemaining,
+        cohortData,
+        setEnergy,
+        setCodingSkill,
+        setActionsRemaining,
+        setCohortData,
+        setCurrentEvent,
+      });
     }
 
-    // Reset day summary for the new day - add decay info if applicable
     setDaySummary({
       skillGained: 0,
       energyLevel: energy,
@@ -212,29 +226,22 @@ function Game() {
     });
   };
 
-  // Update the handleEndDay function to include random weekend events
-
   const handleEndDay = () => {
-    // Calculate if current day is a weekend
-    const dayOfWeek = (day - 1) % 7;
-    const isWeekend = dayOfWeek >= 5;
-
-    if (isWeekend) {
-      // Skip to Monday
-      const daysToSkip = dayOfWeek === 5 ? 2 : 1; // Skip 2 days if Saturday, 1 if Sunday
+    if (isWeekend(day)) {
+      // Calculate current day of week
+      const currentDayOfWeek = (day - 1) % 7;
+      const daysToSkip = currentDayOfWeek === 5 ? 2 : 1;
       const newDay = day + daysToSkip;
+
       setDay(newDay);
-      setActionsRemaining(8); // Reset actions for Monday
+      setActionsRemaining(8);
 
       // 75% chance to come back fully refreshed, 25% chance of being tired
       const isFullyRested = Math.random() < 0.75;
 
       if (isFullyRested) {
-        // Player is fully refreshed
         setEnergy(100);
       } else {
-        // Player is tired from weekend activities
-        // Generate a random weekend event
         const weekendEvents = [
           "You hosted a big family dinner over the weekend.",
           "You helped a friend move to a new apartment.",
@@ -268,36 +275,26 @@ function Game() {
         }
       }
 
-      // Apply skill decay after weekend
       applySkillDecay(newDay);
     } else {
-      // Just end the current day
       nextDay();
     }
   };
 
-  // Wrapper functions to use with performAction
   const handlePracticeCoding = () => {
-    // First check if it's a weekend
-    const dayOfWeek = (day - 1) % 7;
-    const isWeekend = dayOfWeek >= 5;
-
-    if (isWeekend) {
+    if (isWeekend(day)) {
       alert(
         "It's the weekend! No bootcamp today. You can skip to Monday or enjoy your free time."
       );
       return;
     }
 
-    // Then check if we have enough energy
     if (energy < 10) {
-      // Instead of an alert, show the energy modal
       setCurrentActivity("coding");
       setShowEnergyModal(true);
       return;
     }
 
-    // Open the coding practice modal
     setShowCodingPractice(true);
   };
 
@@ -352,13 +349,8 @@ function Game() {
     }
   };
 
-  // Replace the handleSocialize function with this updated version
   const handleSocialize = () => {
-    // First check if it's a weekend
-    const dayOfWeek = (day - 1) % 7;
-    const isWeekend = dayOfWeek >= 5;
-
-    if (isWeekend) {
+    if (isWeekend(day)) {
       alert(
         "It's the weekend! No bootcamp today. You can skip to Monday or enjoy your free time."
       );
@@ -463,7 +455,7 @@ function Game() {
     // Close energy modal
     setShowEnergyModal(false);
 
-    // If we're out of actions, show the day summary
+    // If the player is out of actions, show the day summary
     if (newActionsRemaining <= 0) {
       setDaySummary((prev) => ({
         ...prev,
@@ -481,11 +473,7 @@ function Game() {
   };
 
   const handleStudyPython = () => {
-    // First check if it's a weekend
-    const dayOfWeek = (day - 1) % 7;
-    const isWeekend = dayOfWeek >= 5;
-
-    if (isWeekend) {
+    if (isWeekend(day)) {
       alert(
         "It's the weekend! No bootcamp today. You can skip to Monday or enjoy your free time."
       );
@@ -626,8 +614,23 @@ function Game() {
           daySummary={daySummary}
         />
       )}
+
+      {currentEvent && (
+        <EventMessage
+          event={currentEvent}
+          onClose={() => setCurrentEvent(null)}
+        />
+      )}
     </div>
   );
 }
 
-export default Game;
+function App() {
+  return (
+    <ErrorBoundary>
+      <Game />
+    </ErrorBoundary>
+  );
+}
+
+export default App;

@@ -75,7 +75,7 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
           {!isWeekend ? (
             <p>Actions: {actionsRemaining}/8</p>
           ) : (
-            <p className="weekend-label">Weekend - No Bootcamp</p>
+            <p className="weekend-label">No Bootcamp</p>
           )}
         </div>
       </div>
