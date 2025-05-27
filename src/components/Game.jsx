@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import EnergyBar from "./GamePage/EnergyBar";
 import CodingSkill from "./GamePage/CodingSkill";
 import SocialBondBar from "./GamePage/SocialBondBar";
@@ -22,33 +22,7 @@ import {
 } from "../utils/cohortUtils";
 import "../css/Game.css";
 import codingChallenges from "../data/codingChallenges";
-import { shouldTriggerEvent, getRandomEvent } from "../utils/randomEvents";
 import EventMessage from "./EventMessage";
-
-// Create an ErrorBoundary.jsx component
-class ErrorBoundary extends React.Component {
-  state = { hasError: false };
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Game error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="error-screen">
-          Something went wrong.{" "}
-          <button onClick={() => window.location.reload()}>Restart Game</button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
 
 function Game() {
   const [showEnergyModal, setShowEnergyModal] = useState(false);
@@ -625,12 +599,4 @@ function Game() {
   );
 }
 
-function App() {
-  return (
-    <ErrorBoundary>
-      <Game />
-    </ErrorBoundary>
-  );
-}
-
-export default App;
+export default Game;
