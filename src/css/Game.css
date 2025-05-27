@@ -53,3 +53,30 @@
   border-radius: 10px;
   box-shadow: var(--shadow-sm);
 }
+
+.event-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  max-width: 80%;
+  z-index: 1000;
+  text-align: center;
+}
+
+.event-message.positive {
+  border-left: 5px solid var(--colour-positive);
+}
+
+.event-message.negative {
+  border-left: 5px solid var(--colour-negative);
+}
+
+.event-message button {
+  margin-top: 15px;
+  padding: 8px 20px;
+}

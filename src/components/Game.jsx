@@ -194,7 +194,18 @@ function Game() {
 
     // Process random events for the new day (only on weekdays)
     if (!isWeekend) {
-      processRandomEvent();
+      processRandomEvent({
+        day: newDay,
+        energy,
+        codingSkill,
+        actionsRemaining,
+        cohortData,
+        setEnergy,
+        setCodingSkill,
+        setActionsRemaining,
+        setCohortData,
+        setEventMessage,
+      });
     }
 
     // Reset day summary for the new day - add decay info if applicable
@@ -625,6 +636,14 @@ function Game() {
           }}
           daySummary={daySummary}
         />
+      )}
+
+      {eventMessage && (
+        <div className={`event-message ${eventMessage.type}`}>
+          <h3>{eventMessage.title}</h3>
+          <p>{eventMessage.description}</p>
+          <button onClick={() => setEventMessage(null)}>OK</button>
+        </div>
       )}
     </div>
   );
