@@ -9,6 +9,7 @@ BootCamp Simulator is a gamified way of learning Python. In the game, you play a
 This repo contains one application:
 
 - A frontend React App
+- A backend Python App
 
 ### Try it yourself:
 
@@ -92,7 +93,28 @@ If you haven't already, make sure you have node and NVM installed.
 You should now be able to open your browser and go to the
 `http://localhost:3000` to get to the homepage and start exploring the application.
 
-## Authors and acknowledgment
+### Set up the backend
+
+1. Create a virtual environment
+
+```
+python -m venv env
+source env/bin/activate
+```
+
+2. Install the requirements
+
+```
+pip install -r requirements.txt
+```
+
+3. Run the application
+
+```
+uvicorn app:app --reload
+```
+
+## Author and acknowledgment
 
 This project was created by:
 [Emily Sadler](https://github.com/EmiSadler)

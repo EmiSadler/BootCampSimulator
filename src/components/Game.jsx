@@ -545,7 +545,7 @@ function Game() {
       <Calendar
         day={day}
         actionsRemaining={actionsRemaining}
-        onEndDay={handleEndDay} // Changed from nextDay to handleEndDay
+        onEndDay={handleEndDay} // Changed from nextDay to handleEndDay for clarity
       />
 
       <div className="stats-panel">
