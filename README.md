@@ -114,6 +114,8 @@ pip install -r requirements.txt
 uvicorn app:app --reload
 ```
 
+API should be available at `http://localhost:8000`
+
 ## Author and acknowledgment
 
 This project was created by:
