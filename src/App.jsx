@@ -1,45 +1,91 @@
 import { useState } from "react";
-import Game from "./components/Game";
-import LandingPage from "./components/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
+import GamePage from "./pages/GamePage/Game";
+import LoginPage from "./pages/AuthPages/LoginPage";
+import SignUpPage from "./pages/AuthPages/SignUpPage";
+import { gameAPI } from "./services/api";
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
+  const [currentPage, setCurrentPage] = useState("landing");
+
+  // Add fallback for isLoggedIn function
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    if (gameAPI && typeof gameAPI.isLoggedIn === "function") {
+      return gameAPI.isLoggedIn();
+    }
+    // Fallback: check localStorage directly
+    return !!localStorage.getItem("access_token");
+  });
 
   const handleStartGame = () => {
+    if (isLoggedIn) {
+      setCurrentPage("game");
+      setGameStarted(true);
+    } else {
+      setCurrentPage("login");
+    }
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setCurrentPage("game");
+    setGameStarted(true);
+  };
+
+  const handleSignup = () => {
+    setIsLoggedIn(true);
+    setCurrentPage("game");
     setGameStarted(true);
   };
 
   const handleLogoClick = () => {
-    // Prompt the user if they want to leave the game
-    const confirmExit = window.confirm(
-      "Are you sure you want to leave the game and return to the main menu? Your progress will not be saved."
-    );
-
-    // If they confirm, return to landing page
-    if (confirmExit) {
+    if (gameStarted) {
+      // Simply navigate back to landing page - progress is auto-saved
       setGameStarted(false);
+      setCurrentPage("landing");
     }
+  };
+
+  const handleLogout = () => {
+    if (gameAPI && typeof gameAPI.logout === "function") {
+      gameAPI.logout();
+    } else {
+      localStorage.removeItem("token");
+    }
+    setIsLoggedIn(false);
+    setGameStarted(false);
+    setCurrentPage("landing");
   };
 
   return (
     <div className="App">
-      {!gameStarted ? (
-        <LandingPage onStartGame={handleStartGame} />
-      ) : (
-        <div className="game-layout">
-          <div className="game-logo-container" onClick={handleLogoClick}>
-            <img
-              src="/assets/BootCampSimLogo2.png"
-              alt="BootCamp Simulator Logo"
-              className="game-logo-large"
-              title="Click to return to main menu"
-            />
-          </div>
-          <div className="game-content">
-            <h1>Bootcamp Simulator</h1>
-            <Game />
-          </div>
-        </div>
+      {currentPage === "landing" && (
+        <LandingPage
+          onStartGame={handleStartGame}
+          onLoginClick={() => setCurrentPage("login")}
+          onSignupClick={() => setCurrentPage("signup")}
+        />
+      )}
+
+      {currentPage === "login" && (
+        <LoginPage
+          onLogin={handleLogin}
+          onSignupClick={() => setCurrentPage("signup")}
+          onBackClick={() => setCurrentPage("landing")}
+        />
+      )}
+
+      {currentPage === "signup" && (
+        <SignUpPage
+          onSignup={handleSignup}
+          onLoginClick={() => setCurrentPage("login")}
+          onBackClick={() => setCurrentPage("landing")}
+        />
+      )}
+
+      {currentPage === "game" && (
+        <GamePage onLogout={handleLogout} onLogoClick={handleLogoClick} />
       )}
     </div>
   );

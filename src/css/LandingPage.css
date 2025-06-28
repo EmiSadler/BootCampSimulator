@@ -10,19 +10,6 @@
   overflow: hidden;
 }
 
-.logo-container {
-  margin-bottom: 2rem;
-  max-width: 100%;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.landing-logo {
-  width: 180px;
-  height: auto;
-  object-fit: contain;
-}
-
 .landing-hero {
   display: flex;
   padding: 60px 40px;

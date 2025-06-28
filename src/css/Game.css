@@ -1,7 +1,7 @@
 .game-container {
   display: grid;
   grid-template-columns: 300px 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   gap: 15px;
   margin-bottom: 20px;
   max-width: 1200px;
@@ -14,14 +14,14 @@
   );
 }
 
-.calendar-container {
+.game-container > .calendar-container {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: 2;
 }
 
 .stats-panel {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 2 / span 2;
   background-color: var(--colour-secondary-light);
   padding: 15px;
   border-radius: 6px;
@@ -31,7 +31,7 @@
 
 .actions-container {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
   padding: 15px;
   background-color: var(--colour-secondary-light);
   border-radius: 6px;
@@ -79,4 +79,131 @@
 .event-message button {
   margin-top: 15px;
   padding: 8px 20px;
+}
+
+/* Game Header Layout */
+.game-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-height: 60px; /* Minimum height for consistent layout */
+  gap: 20px; /* Space between header elements */
+}
+
+.logout-button {
+  background: var(--colour-negative);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.logout-button:hover {
+  background: #d81b60;
+  transform: translateY(-1px);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+/* Game Welcome Header */
+.game-welcome-header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.game-welcome-header .welcome-message {
+  margin-right: 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .game-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .welcome-message {
+    margin-right: 0;
+  }
+
+  .logout-button {
+    align-self: flex-end;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .game-welcome-header {
+    margin-bottom: 15px;
+  }
+}
+
+/* Game Top Header Layout */
+.game-top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: var(--bg-neutral-light);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 15px;
+}
+
+.game-top-header .logo-container {
+  flex: 0 0 auto;
+}
+
+.game-top-header .welcome-message {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+.game-top-header .restart-button,
+.game-top-header .logout-button {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .game-top-header {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+  }
+
+  .game-top-header .logo-container {
+    order: 1;
+  }
+
+  .game-top-header .welcome-message {
+    order: 2;
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .game-top-header .restart-button {
+    order: 3;
+  }
+
+  .game-top-header .logout-button {
+    order: 4;
+  }
 }

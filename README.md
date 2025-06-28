@@ -17,42 +17,56 @@ This repo contains one application:
 
 ### Features
 
-- Dark mode/light mode
-- Audio on/off
-- How to Play modal
-- Difficulty selector (easy/hard)
-  - Easy mode: always shows cast, 30 second timer
-  - Hard mode: only shows cast on first film, 20 second timer
-- Start game button
-- Fetches initial film from API
-- Input box for player to name a movie with overlapping cast member
-- Auto complete dropdown box
-- Dropdown box can be navigated using keyboard arrows and enter or trackpad/mouse
-- Timer to track turn length
-- End of game modal to show score and play again button
-- Can navigate back to home page using logo
+**Core Gameplay**
+
+- Interactive bootcamp simulation with daily actions
+- Energy management system (8 actions per day)
+- Study Python to increase coding skills
+- Practice coding through coding challenges
+- Socialize with cohort members to build relationships
+- Random events that affect various stats
+- Day progression system
+
+**Technical Features**
+
+- React frontend with modern UI
+- Flask backend API with JWT authentication
+- SQLite database for data persistence
+- User registration and login system
+- Game progress saving and loading
+- Cross-origin resource sharing (CORS) support
+
+**Current Implementation**
+
+- ✅ User account creation and authentication
+- ✅ Game state persistence between sessions
+- ✅ Full bootcamp simulation gameplay
+- ✅ Cohort member interaction system
 
 ### Future Features
 
-**Accounts**
+**Enhanced Gameplay**
 
-- Users can create an account
-- Users can login
-- Game state will persist between sessions so users don't lose their games
+- Final project end game with coding challenges
+- Score calculation using Coding Score with cohort friendship multiplier
+- More complex random events and storylines
+- Additional cohort member personalities and interactions
 
-**End Game**
+**UI/UX Improvements**
 
-- A final project end game where player is presented with a coding challenge
-- Score is calculated by Coding Score with a cohort friendship level multiplier
-
-**Styling and misc.**
-
-- Optimising for use on a mobile device
+- Dark mode/light mode toggle
+- Audio on/off settings
+- Optimizing for mobile device usage
 - Accessibility features for people with disabilities
-- Animated buttons
-- Refining the UX/UI
-- Dark mode/light mode
-- Cohort pixel art
+- Animated buttons and smoother transitions
+- Cohort member pixel art and character illustrations
+
+**Technical Enhancements**
+
+- PostgreSQL database option for production
+- Enhanced security features
+- Performance optimizations
+- Comprehensive testing suite
 
 ### Documentation
 
@@ -80,41 +94,104 @@ If you haven't already, make sure you have node and NVM installed.
 
 1. Fork this repository
 2. Rename the fork
-3. Clone the fork to their local machine
+3. Clone the fork to your local machine
 
-### How to run the server and use the app
+### How to run the application
 
-1. Start the server application from the root directory in dev mode:
+#### Frontend Setup
 
+1. Install dependencies from the root directory:
+
+```bash
+npm install
 ```
-; npm run dev
+
+2. Start the frontend development server:
+
+```bash
+npm run dev
 ```
 
-You should now be able to open your browser and go to the
-`http://localhost:3000` to get to the homepage and start exploring the application.
+The React application will be available at `http://localhost:3000`
 
-### Set up the backend
+#### Backend Setup
 
-1. Create a virtual environment
+1. Navigate to the backend directory:
 
+```bash
+cd backend
 ```
+
+2. Create a virtual environment:
+
+```bash
 python -m venv env
+```
+
+3. Activate the virtual environment:
+
+```bash
+# On macOS/Linux:
 source env/bin/activate
+
+# On Windows:
+env\Scripts\activate
 ```
 
-2. Install the requirements
+4. Install the requirements:
 
-```
-pip install -r requirements.txt
-```
-
-3. Run the application
-
-```
-uvicorn app:app --reload
+```bash
+pip install -r requirements_flask.txt
 ```
 
-API should be available at `http://localhost:8000`
+5. Run the Flask application:
+
+```bash
+python app.py
+```
+
+The API will be available at `http://localhost:5001`
+
+#### Full Application
+
+Once both servers are running:
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5001`
+
+The application supports:
+
+- User registration and authentication
+- Game progress saving and loading
+- Full bootcamp simulation gameplay
+
+#### Troubleshooting
+
+**Port Conflicts**
+
+- If port 5000 is in use (common on macOS with AirPlay Receiver), the backend runs on port 5001
+- If port 3000 is in use, Vite will automatically suggest an alternative port (e.g., 3001)
+- To stop a process using a specific port: `lsof -ti:[PORT] | xargs kill`
+- Example: `lsof -ti:5001 | xargs kill` to stop processes on port 5001
+
+**CORS Issues**
+
+- Backend is configured to accept requests from ports 3000 and 3001
+- If frontend runs on a different port, update CORS in `backend/app.py`
+- Clear browser cache if CORS errors persist
+
+**Backend Issues**
+
+- Ensure you're in the `backend` directory when running Flask commands
+- Activate the virtual environment before installing packages
+- Use `requirements_flask.txt` for the most up-to-date dependencies
+- If database issues occur, delete `backend/instance/bootcampsim.db` to reset
+
+**Frontend Issues**
+
+- Run `npm install` if you encounter module-related errors
+- Clear browser cache if authentication seems to persist incorrectly
+- Check browser console for CORS or API connection errors
 
 ## Author and acknowledgment
 
