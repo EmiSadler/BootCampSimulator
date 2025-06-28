@@ -11,7 +11,7 @@ This repo contains one application:
 - A frontend React App
 - A backend Python App
 
-### Try it yourself:
+### Try it yourself: _This is running an older version without the backend_
 
 [Link to netlify](https://bootcampsim.netlify.app/)
 
