@@ -1,0 +1,49 @@
+/* Restart Button Component */
+.restart-button {
+  background: #ff5722; /* Orange-red color for warning/action */
+  color: white;
+  border: none;
+  padding: 12px 20px; /* Match LogoutButton sizing */
+  border-radius: 6px;
+  font-size: 1rem; /* Match LogoutButton sizing */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.restart-button:hover {
+  background: #e64a19;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.restart-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .restart-button {
+    padding: 10px 16px; /* Match LogoutButton mobile sizing */
+    font-size: 0.9rem; /* Match LogoutButton mobile sizing */
+  }
+}
+
+/* Small screens - only show icon */
+@media (max-width: 600px) {
+  .restart-button {
+    padding: 8px;
+    min-width: 36px;
+    justify-content: center;
+  }
+
+  .restart-button::after {
+    content: "";
+  }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Frontend API</title>
+</head>
+<body>
+    <h1>Testing Frontend API Connection</h1>
+    <button onclick="testRegister()">Test Register</button>
+    <button onclick="testLogin()">Test Login</button>
+    <button onclick="testLoadProgress()">Test Load Progress</button>
+    <div id="results"></div>
+
+    <script>
+        const API_URL = "http://localhost:5001";
+        
+        async function testRegister() {
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ 
+                        username: "testuser2", 
+                        email: "test2@example.com", 
+                        password: "testpassword123" 
+                    }),
+                });
+                const data = await response.json();
+                document.getElementById('results').innerHTML += '<p>Register: ' + JSON.stringify(data) + '</p>';
+            } catch (error) {
+                document.getElementById('results').innerHTML += '<p>Register Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch(`${API_URL}/auth/token`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ 
+                        username: "testuser2", 
+                        password: "testpassword123" 
+                    }),
+                });
+                const data = await response.json();
+                document.getElementById('results').innerHTML += '<p>Login: ' + JSON.stringify(data) + '</p>';
+                
+                if (data.access_token) {
+                    localStorage.setItem('access_token', data.access_token);
+                }
+            } catch (error) {
+                document.getElementById('results').innerHTML += '<p>Login Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function testLoadProgress() {
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await fetch(`${API_URL}/api/game-progress/load`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                const data = await response.json();
+                document.getElementById('results').innerHTML += '<p>Load Progress: ' + JSON.stringify(data) + '</p>';
+            } catch (error) {
+                document.getElementById('results').innerHTML += '<p>Load Progress Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>
