@@ -1,0 +1,65 @@
+/* Logo Component */
+.logo-container {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Let the container size determine logo space */
+  height: 100%;
+  min-height: 40px;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  /* Use responsive sizing with maximum constraints */
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 60px; /* Prevent logo from becoming too large */
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Game page header - allocate specific height for logo container */
+.game-header .logo-container {
+  height: 60px;
+  flex-shrink: 0;
+}
+
+/* Game page specific max height to prevent oversizing */
+.game-header .logo-image {
+  max-height: 55px;
+}
+
+/* Landing page header - allocate larger height for logo container */
+.landing-container .logo-container {
+  height: 100px;
+  margin-bottom: 2rem;
+}
+
+/* Landing page can have larger logo */
+.landing-container .logo-image {
+  max-height: 90px;
+}
+
+@media (max-width: 768px) {
+  .game-header .logo-container {
+    height: 45px;
+  }
+
+  .game-header .logo-image {
+    max-height: 40px;
+  }
+
+  .landing-container .logo-container {
+    height: 70px;
+  }
+
+  .landing-container .logo-image {
+    max-height: 60px;
+  }
+}

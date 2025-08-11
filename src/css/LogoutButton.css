@@ -1,0 +1,30 @@
+/* Logout Button Component */
+.logout-button {
+  background: var(--colour-negative);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.logout-button:hover {
+  background: #d81b60;
+  transform: translateY(-1px);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .logout-button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+}

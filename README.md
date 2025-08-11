@@ -100,7 +100,7 @@ If you haven't already, make sure you have node and NVM installed.
 
 #### Frontend Setup
 
-1. Install dependencies from the root directory:
+1. Install dependencies from the root directory (src):
 
 ```bash
 npm install
