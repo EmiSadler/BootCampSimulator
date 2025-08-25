@@ -152,6 +152,59 @@ python app.py
 
 The API will be available at `http://localhost:5001`
 
+#### Testing
+
+The backend includes comprehensive tests for all authentication endpoints.
+
+1. Ensure you're in the backend directory and virtual environment is activated:
+
+```bash
+cd backend
+source env/bin/activate
+```
+
+2. Install test dependencies (included in requirements_flask.txt):
+
+```bash
+pip install -r requirements_flask.txt
+```
+
+3. Run tests:
+
+```bash
+# Run all tests
+python -m pytest
+
+# Run tests with coverage report
+python -m pytest --cov=. --cov-report=html --cov-report=term-missing
+
+# Run specific test file
+python -m pytest tests/test_auth.py
+
+# Run tests with more verbose output
+python -m pytest -v
+
+# Use the test runner script
+./run_tests.sh
+```
+
+The test suite includes:
+
+- ✅ User registration tests (success, validation, duplicates)
+- ✅ User login tests (success, authentication, edge cases)
+- ✅ Protected endpoint tests (token validation, authorization)
+- ✅ Password security tests (hashing, no plaintext storage)
+- ✅ Complete authentication flow tests
+- ✅ Error handling and edge case tests
+
+For local development, you can generate HTML coverage reports with:
+
+```bash
+python -m pytest --cov=. --cov-report=html --cov-report=term-missing
+```
+
+Coverage reports will be available in `htmlcov/index.html`.
+
 #### Full Application
 
 Once both servers are running:
