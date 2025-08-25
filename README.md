@@ -189,14 +189,21 @@ python -m pytest -v
 ```
 
 The test suite includes:
+
 - ✅ User registration tests (success, validation, duplicates)
-- ✅ User login tests (success, authentication, edge cases)  
+- ✅ User login tests (success, authentication, edge cases)
 - ✅ Protected endpoint tests (token validation, authorization)
 - ✅ Password security tests (hashing, no plaintext storage)
 - ✅ Complete authentication flow tests
 - ✅ Error handling and edge case tests
 
-Coverage reports are generated in `htmlcov/index.html`.
+For local development, you can generate HTML coverage reports with:
+
+```bash
+python -m pytest --cov=. --cov-report=html --cov-report=term-missing
+```
+
+Coverage reports will be available in `htmlcov/index.html`.
 
 #### Full Application
 
