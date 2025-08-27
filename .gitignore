@@ -60,7 +60,14 @@ pids
 
 # Coverage directory used by tools like istanbul
 coverage/
+htmlcov/
 *.lcov
+.nyc_output
+
+# Testing
+.pytest_cache/
+.coverage
+.vitest/
 
 # Deployment
 .netlify/
@@ -71,12 +78,28 @@ flask_session/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pytest
-.pytest_cache/
-.coverage
-
 # Virtual environments
 venv/
 ENV/
 env/
 .venv/
+
+# Package manager lock files (optional - some prefer to commit these)
+# package-lock.json
+# yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Local development
+.local/
+.vercel/
+
+# Docker (if you add Docker later)
+.dockerignore
+
+# Backup files
+*.bak
+*.backup
