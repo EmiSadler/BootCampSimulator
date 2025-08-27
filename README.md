@@ -154,6 +154,10 @@ The API will be available at `http://localhost:5001`
 
 #### Testing
 
+The project includes comprehensive tests for both frontend and backend components.
+
+##### Backend Testing
+
 The backend includes comprehensive tests for all authentication endpoints.
 
 1. Ensure you're in the backend directory and virtual environment is activated:
@@ -188,16 +192,76 @@ python -m pytest -v
 ./run_tests.sh
 ```
 
-The test suite includes:
+The backend test suite includes:
 
 - ✅ User registration tests (success, validation, duplicates)
 - ✅ User login tests (success, authentication, edge cases)
 - ✅ Protected endpoint tests (token validation, authorization)
 - ✅ Password security tests (hashing, no plaintext storage)
 - ✅ Complete authentication flow tests
+- ✅ Game progress CRUD operations tests
 - ✅ Error handling and edge case tests
 
 For local development, you can generate HTML coverage reports with:
+
+```bash
+python -m pytest --cov=. --cov-report=html --cov-report=term-missing
+```
+
+Coverage reports will be available in `htmlcov/index.html`.
+
+##### Frontend Testing
+
+The frontend includes comprehensive tests for React components and services.
+
+1. Ensure you're in the root directory:
+
+```bash
+# From project root
+npm install
+```
+
+2. Run tests:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode (development)
+npm test -- --watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run specific test file
+npm test -- Logo.test.jsx
+
+# Run tests with UI (if installed)
+npm run test:ui
+```
+
+The frontend test suite includes:
+
+- ✅ Component rendering and behavior tests
+- ✅ User interaction tests (clicks, form submissions)
+- ✅ Props validation and default values
+- ✅ Event handling and callbacks
+- ✅ CSS class and styling verification
+- ✅ Accessibility testing (roles, ARIA attributes)
+- ✅ API service testing with mocked responses
+- ✅ Error handling and edge cases
+- ✅ Authentication flow testing
+
+**Tested Components:**
+
+- Logo component (responsive behavior, click handlers)
+- RestartButton (confirmation dialog, game restart)
+- LogoutButton (click handling, styling)
+- WelcomeMessage (dynamic content, default values)
+- EventMessage (complex UI states, animations, effects)
+- API services (authentication, error handling)
+
+Coverage reports are generated in the terminal and as HTML files in `coverage/` directory.
 
 ```bash
 python -m pytest --cov=. --cov-report=html --cov-report=term-missing
