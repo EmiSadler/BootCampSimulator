@@ -1,0 +1,83 @@
+# Docker Compose for BootCamp Simulator
+version: "3.8"
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bootcampsim
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      # Database settings
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_SERVER: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: bootcampsim
+      USE_SQLITE: "False" # Use PostgreSQL in Docker
+
+      # JWT settings
+      SECRET_KEY: a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+      ACCESS_TOKEN_EXPIRE_MINUTES: 1440
+
+      # Flask settings
+      FLASK_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Mount for development (optional - remove for production)
+      - ./backend:/app
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:5001/')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend (optional - for complete stack)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://backend:5001
+    depends_on:
+      - backend
+    # Uncomment for development
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+
+volumes:
+  postgres_data:
