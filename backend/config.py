@@ -15,10 +15,7 @@ class Settings:
     POSTGRES_DB: str = os.getenv("POSTGRES_DB", "bootcampsim")
     DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
     
-    # For development, you might prefer SQLite
-    SQLITE_URL: str = "sqlite:///./bootcampsim.db"
-    
-    # Use this to switch between database types - THIS WAS MISSING
+    SQLITE_URL: str = os.getenv("SQLITE_URL", "sqlite:///./bootcampsim.db")
     USE_SQLITE: bool = os.getenv("USE_SQLITE", "True").lower() == "true"
     
     # JWT settings
