@@ -1,4 +1,5 @@
-const API_URL = "https://bootcampsimulator.sadlers.cloud";
+// Use environment variable for API URL, with fallback for development
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
 /**
  * Authentication API calls

@@ -114,6 +114,12 @@ npm run dev
 
 The React application will be available at `http://localhost:3000`
 
+**Environment Configuration:**
+
+- Development: Uses `http://localhost:5001` for API calls
+- Production (Netlify): Uses `https://bootcampsimulator.sadlers.cloud` for API calls
+- Configuration is handled via environment variables in `.env.development` and `.env.production`
+
 #### Backend Setup
 
 1. Navigate to the backend directory:
