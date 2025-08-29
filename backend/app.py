@@ -38,7 +38,28 @@ def create_app(test_config=None):
 
     # Initialize other extensions
     jwt = JWTManager(app)
-    CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://localhost:3001"]}})
+    
+    # Configure CORS - include Netlify domain
+    cors_origins = [
+        "http://localhost:3000", 
+        "http://localhost:3001",
+        "https://bootcampsim.netlify.app",  # Your Netlify domain
+        "https://bootcampsimulator.sadlers.cloud"  # Your custom domain (if used)
+    ]
+    
+    # Add environment-specific origins
+    if os.getenv('CORS_ORIGINS'):
+        cors_origins.extend(os.getenv('CORS_ORIGINS').split(','))
+    
+    # Configure CORS with additional options
+    CORS(app, resources={
+        r"/*": {
+            "origins": cors_origins,
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        }
+    })
 
     # Import and register blueprints AFTER database initialization
     from auth.routes import auth_bp
