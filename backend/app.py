@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import os
+from config import settings
 
 # Load environment variables first
 load_dotenv()
@@ -16,20 +17,15 @@ def create_app(test_config=None):
     # Configure app
     if test_config is None:
         # Load the instance config, if it exists, when not testing
-        app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-for-jwt')
-        app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-for-jwt')
-        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 1440)) * 60
+        app.config['SECRET_KEY'] = settings.SECRET_KEY
+        app.config['JWT_SECRET_KEY'] = settings.SECRET_KEY
+        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
 
         # Configure database
-        if os.getenv('USE_SQLITE', 'True').lower() == 'true':
-            app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bootcampsim.db'
+        if settings.USE_SQLITE:
+            app.config['SQLALCHEMY_DATABASE_URI'] = settings.SQLITE_URL
         else:
-            db_user = os.getenv('POSTGRES_USER', 'postgres')
-            db_password = os.getenv('POSTGRES_PASSWORD', 'postgres')
-            db_host = os.getenv('POSTGRES_SERVER', 'localhost')
-            db_port = os.getenv('POSTGRES_PORT', '5432')
-            db_name = os.getenv('POSTGRES_DB', 'bootcampsim')
-            app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+            app.config['SQLALCHEMY_DATABASE_URI'] = settings.DATABASE_URL
 
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     else:
