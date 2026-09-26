@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import possibleCohortMembers from "../data/cohortData";
-import { possibleActivities } from "../utils/socializeUtils";
+import possibleActivities from "../data/socialActivities";
 import { generateRandomCohort } from "../utils/cohortUtils";
 
 afterEach(() => {

@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import "../../css/SocializeModal.css";
-import {
-  possibleActivities,
-  calculateBondChange,
-} from "../../utils/socializeUtils";
+import possibleActivities from "../../data/socialActivities";
+import { calculateBondChange } from "../../utils/socializeUtils";
+import { shuffle } from "../../utils/helpers";
 
 function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -15,8 +14,7 @@ function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {
   // Generate 4 random activities when the modal opens
   useEffect(() => {
     // Shuffle and pick 4 random activities
-    const shuffled = [...possibleActivities].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 4);
+    const selected = shuffle(possibleActivities).slice(0, 4);
     setActivities(selected);
   }, [person.name]); // Regenerate activities if person changes
 
