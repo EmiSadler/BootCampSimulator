@@ -103,3 +103,9 @@ env/
 # Backup files
 *.bak
 *.backup
+
+# Vite cache
+.vite/
+
+# Local planning docs
+docs/
