@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { clamp, shuffle } from "../utils/helpers";
 
 describe("clamp", () => {
@@ -19,6 +19,10 @@ describe("clamp", () => {
   });
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe("shuffle", () => {
   it("returns a new array with the same items", () => {
     const original = [1, 2, 3, 4, 5, 6];
@@ -37,5 +41,36 @@ describe("shuffle", () => {
   it("handles empty and single-item arrays", () => {
     expect(shuffle([])).toEqual([]);
     expect(shuffle(["a"])).toEqual(["a"]);
+  });
+
+  // Fisher-Yates makes one pick per position: position i chooses among i + 1
+  // slots. Feeding it every possible combination of picks must give every
+  // ordering exactly once, which is what "unbiased" means.
+  it.each([3, 4, 5])("gives each ordering of %i items exactly once", (size) => {
+    const items = Array.from({ length: size }, (_, index) => index);
+    const orderings = new Map();
+
+    const walk = (position, picks) => {
+      if (position === 0) {
+        const queue = [...picks];
+        vi.spyOn(Math, "random").mockImplementation(() => queue.shift());
+
+        const key = shuffle(items).join(",");
+        orderings.set(key, (orderings.get(key) || 0) + 1);
+        return;
+      }
+
+      for (let slot = 0; slot <= position; slot++) {
+        // Pick the middle of each slot's range so floor() is unambiguous
+        walk(position - 1, [...picks, (slot + 0.5) / (position + 1)]);
+      }
+    };
+    walk(size - 1, []);
+
+    const factorial = Array.from({ length: size }, (_, i) => i + 1).reduce(
+      (product, n) => product * n
+    );
+    expect(orderings.size).toBe(factorial);
+    orderings.forEach((count) => expect(count).toBe(1));
   });
 });
