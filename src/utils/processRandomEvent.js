@@ -1,4 +1,7 @@
 import { shouldTriggerEvent, getRandomEvent } from "./randomEvents";
+import { isWeekend } from "./weekendChecker";
+import { clamp } from "./helpers";
+import { clampBond } from "./socializeUtils";
 
 const processRandomEvent = ({
   day,
@@ -10,17 +13,14 @@ const processRandomEvent = ({
   setCodingSkill,
   setActionsRemaining,
   setCohortData,
-  setCurrentEvent, // <-- Changed from setEventMessage
+  setCurrentEvent,
 }) => {
-  const dayOfWeek = (day - 1) % 7;
-  const isWeekend = dayOfWeek >= 5;
-
-  if (isWeekend) return;
+  if (isWeekend(day)) return;
 
   if (shouldTriggerEvent()) {
     const event = getRandomEvent();
 
-    //actions losts
+    //actions lost
     if (event.effect.actionsLost === "all") {
       setActionsRemaining(0);
     } else {
@@ -32,7 +32,7 @@ const processRandomEvent = ({
     }
 
     //coding skill
-    setEnergy(Math.max(0, Math.min(100, energy + event.effect.energyChange)));
+    setEnergy(clamp(energy + event.effect.energyChange, 0, 100));
     setCodingSkill(codingSkill + event.effect.skillChange);
 
     //bonds
@@ -41,11 +41,7 @@ const processRandomEvent = ({
         const updatedBonds = {};
         Object.keys(cohortData.bonds).forEach((name) => {
           const currentBond = cohortData.bonds[name];
-          const newBond = Math.max(
-            -100,
-            Math.min(100, currentBond + event.effect.bondsChange)
-          );
-          updatedBonds[name] = newBond;
+          updatedBonds[name] = clampBond(currentBond + event.effect.bondsChange);
         });
 
         setCohortData({

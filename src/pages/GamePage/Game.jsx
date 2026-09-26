@@ -20,12 +20,9 @@ import { isWeekend } from "../../utils/weekendChecker";
 import {
   pickRandomPersonToSocialize,
   updateBondWithPerson,
-  possibleActivities,
 } from "../../utils/socializeUtils";
-import {
-  generateRandomCohort,
-  getCohortMemberDetails,
-} from "../../utils/cohortUtils";
+import possibleActivities from "../../data/socialActivities";
+import { generateRandomCohort } from "../../utils/cohortUtils";
 import codingChallenges from "../../data/codingChallenges";
 import "../../css/Game.css";
 

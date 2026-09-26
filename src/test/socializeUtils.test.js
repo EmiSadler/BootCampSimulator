@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
+import possibleActivities from "../data/socialActivities";
 import {
-  possibleActivities,
   pickRandomPersonToSocialize,
   updateBondWithPerson,
   calculateBondChange,
