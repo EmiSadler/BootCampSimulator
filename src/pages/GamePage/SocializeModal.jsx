@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../css/SocializeModal.css";
-import {
-  possibleActivities,
-  calculateBondChange,
-} from "../../utils/socializeUtils";
+import possibleActivities from "../../data/socialActivities";
+import { calculateBondChange } from "../../utils/socializeUtils";
 import { shuffle } from "../../utils/helpers";
 
 function SocializeModal({ person, onComplete, onClose, onDiscoverInfo }) {

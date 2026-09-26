@@ -1,4 +1,4 @@
-import { possibleActivities } from "../../utils/socializeUtils";
+import possibleActivities from "../../data/socialActivities";
 import "../../css/SocialBondBar.css";
 
 function SocialMemberDetails({

@@ -1,5 +1,5 @@
 import possibleCohortMembers from "../data/cohortData";
-import { possibleActivities } from "./socializeUtils";
+import possibleActivities from "../data/socialActivities";
 import { shuffle } from "./helpers";
 
 /**

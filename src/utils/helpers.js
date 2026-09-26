@@ -10,10 +10,18 @@ export function clamp(value, min, max) {
 }
 
 /**
- * Returns a shuffled copy of an array, leaving the original untouched
+ * Returns a shuffled copy of an array, leaving the original untouched.
+ * Uses a Fisher-Yates shuffle so every ordering is equally likely.
  * @param {Array} items - The array to shuffle
  * @returns {Array} - A new, shuffled array
  */
 export function shuffle(items) {
-  return [...items].sort(() => 0.5 - Math.random());
+  const result = [...items];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
 }
