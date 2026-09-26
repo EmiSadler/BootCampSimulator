@@ -6,55 +6,29 @@ import SignUpPage from "./pages/AuthPages/SignUpPage";
 import { gameAPI } from "./services/api";
 
 function App() {
-  const [gameStarted, setGameStarted] = useState(false);
   const [currentPage, setCurrentPage] = useState("landing");
-
-  // Add fallback for isLoggedIn function
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    if (gameAPI && typeof gameAPI.isLoggedIn === "function") {
-      return gameAPI.isLoggedIn();
-    }
-    // Fallback: check localStorage directly
-    return !!localStorage.getItem("access_token");
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(() => gameAPI.isLoggedIn());
 
   const handleStartGame = () => {
-    if (isLoggedIn) {
-      setCurrentPage("game");
-      setGameStarted(true);
-    } else {
-      setCurrentPage("login");
-    }
+    setCurrentPage(isLoggedIn ? "game" : "login");
   };
 
-  const handleLogin = () => {
+  // Used for both a successful login and a successful signup
+  const handleAuthSuccess = () => {
     setIsLoggedIn(true);
     setCurrentPage("game");
-    setGameStarted(true);
-  };
-
-  const handleSignup = () => {
-    setIsLoggedIn(true);
-    setCurrentPage("game");
-    setGameStarted(true);
   };
 
   const handleLogoClick = () => {
-    if (gameStarted) {
-      // Simply navigate back to landing page - progress is auto-saved
-      setGameStarted(false);
+    // Simply navigate back to landing page - progress is auto-saved
+    if (currentPage === "game") {
       setCurrentPage("landing");
     }
   };
 
   const handleLogout = () => {
-    if (gameAPI && typeof gameAPI.logout === "function") {
-      gameAPI.logout();
-    } else {
-      localStorage.removeItem("token");
-    }
+    gameAPI.logout();
     setIsLoggedIn(false);
-    setGameStarted(false);
     setCurrentPage("landing");
   };
 
@@ -70,7 +44,7 @@ function App() {
 
       {currentPage === "login" && (
         <LoginPage
-          onLogin={handleLogin}
+          onLogin={handleAuthSuccess}
           onSignupClick={() => setCurrentPage("signup")}
           onBackClick={() => setCurrentPage("landing")}
         />
@@ -78,7 +52,7 @@ function App() {
 
       {currentPage === "signup" && (
         <SignUpPage
-          onSignup={handleSignup}
+          onSignup={handleAuthSuccess}
           onLoginClick={() => setCurrentPage("login")}
           onBackClick={() => setCurrentPage("landing")}
         />
