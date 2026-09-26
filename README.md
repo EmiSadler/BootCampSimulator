@@ -307,7 +307,7 @@ The application supports:
 
 - Ensure you're in the `backend` directory when running Flask commands
 - Activate the virtual environment before installing packages
-- Use `requirements_flask.txt` for the most up-to-date dependencies
+- Install dependencies from `requirements_flask.txt`
 - If database issues occur, delete `backend/instance/bootcampsim.db` to reset
 
 **Frontend Issues**
