@@ -1,106 +1,49 @@
 // Use environment variable for API URL, with fallback for development
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
-/**
- * Authentication API calls
- */
-export const authAPI = {
-  // Register a new user
-  register: async (username, email, password) => {
-    const response = await fetch(`${API_URL}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
-    return handleResponse(response);
-  },
+const getToken = () => localStorage.getItem("access_token");
 
-  // Login user
-  login: async (username, password) => {
-    const response = await fetch(`${API_URL}/auth/token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+const authHeaders = (token) => ({
+  Authorization: `Bearer ${token}`,
+  "Content-Type": "application/json",
+});
 
-    const data = await handleResponse(response);
+// POST a JSON body without authentication (register / login)
+const postJSON = (path, body) =>
+  fetch(`${API_URL}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
 
-    // Save token to localStorage
-    if (data.access_token) {
-      localStorage.setItem("access_token", data.access_token);
-    }
-
-    return data;
-  },
-
-  // Logout user
-  logout: () => {
-    localStorage.removeItem("access_token");
-  },
-
-  // Check if user is logged in
-  isLoggedIn: () => {
-    const token = localStorage.getItem("access_token");
-    return !!token;
-  },
-
-  // Get current user info
-  getCurrentUser: async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return null;
-
-    try {
-      const response = await fetch(`${API_URL}/auth/me`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        return await response.json();
-      }
-
-      // If token is invalid, remove it
-      if (response.status === 401) {
-        localStorage.removeItem("token");
-      }
-
-      return null;
-    } catch (error) {
-      console.error("Error getting current user:", error);
-      return null;
-    }
-  },
-};
+// Request an endpoint that needs the logged-in user's token
+const authRequest = (path, { method, token, body }) =>
+  fetch(`${API_URL}${path}`, {
+    method,
+    headers: authHeaders(token),
+    ...(body !== undefined && { body: JSON.stringify(body) }),
+  });
 
 /**
- * Game progress API calls
+ * Authentication and game progress API calls
  */
 export const gameAPI = {
   // Check if user is logged in
   isLoggedIn: () => {
-    const token = localStorage.getItem("access_token");
-    return !!token;
+    return !!getToken();
   },
 
   // Get current user info
   getCurrentUser: async () => {
-    const token = localStorage.getItem("access_token");
+    const token = getToken();
     if (!token) return null;
 
     try {
-      const response = await fetch(`${API_URL}/auth/me`, {
+      const response = await authRequest("/auth/me", {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        token,
       });
 
       if (response.ok) {
@@ -122,12 +65,10 @@ export const gameAPI = {
   // Register new user
   register: async (username, email, password) => {
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
+      const response = await postJSON("/auth/register", {
+        username,
+        email,
+        password,
       });
 
       const data = await response.json();
@@ -147,13 +88,7 @@ export const gameAPI = {
   // Login user
   login: async (username, password) => {
     try {
-      const response = await fetch(`${API_URL}/auth/token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await postJSON("/auth/token", { username, password });
 
       const data = await response.json();
 
@@ -178,7 +113,7 @@ export const gameAPI = {
 
   // Save game progress
   saveProgress: async (gameData) => {
-    const token = localStorage.getItem("access_token");
+    const token = getToken();
 
     if (!token) {
       console.log("No token found, cannot save progress");
@@ -186,13 +121,10 @@ export const gameAPI = {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/game-progress/save`, {
+      const response = await authRequest("/api/game-progress/save", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(gameData),
+        token,
+        body: gameData,
       });
 
       if (response.ok) {
@@ -211,7 +143,7 @@ export const gameAPI = {
 
   // Load game progress
   loadProgress: async () => {
-    const token = localStorage.getItem("access_token");
+    const token = getToken();
 
     if (!token) {
       console.log("No token found, cannot load progress");
@@ -219,12 +151,9 @@ export const gameAPI = {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/game-progress/load`, {
+      const response = await authRequest("/api/game-progress/load", {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        token,
       });
 
       // If the request was successful (status code 200-299)
@@ -250,7 +179,7 @@ export const gameAPI = {
 
   // Delete game progress (restart game)
   deleteProgress: async () => {
-    const token = localStorage.getItem("access_token");
+    const token = getToken();
 
     if (!token) {
       console.log("No token found, cannot delete progress");
@@ -258,12 +187,9 @@ export const gameAPI = {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/game-progress/delete`, {
+      const response = await authRequest("/api/game-progress/delete", {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        token,
       });
 
       if (response.ok) {
@@ -279,15 +205,3 @@ export const gameAPI = {
     }
   },
 };
-
-// Helper function to handle API responses
-async function handleResponse(response) {
-  const data = await response.json();
-
-  if (!response.ok) {
-    const error = data.detail || response.statusText;
-    throw new Error(error);
-  }
-
-  return data;
-}
