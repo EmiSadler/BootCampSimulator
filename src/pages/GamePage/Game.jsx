@@ -22,10 +22,7 @@ import {
   updateBondWithPerson,
   possibleActivities,
 } from "../../utils/socializeUtils";
-import {
-  generateRandomCohort,
-  getCohortMemberDetails,
-} from "../../utils/cohortUtils";
+import { generateRandomCohort } from "../../utils/cohortUtils";
 import codingChallenges from "../../data/codingChallenges";
 import "../../css/Game.css";
 

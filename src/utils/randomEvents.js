@@ -1,6 +1,7 @@
 /**
  * Collection of random events that can occur during the bootcamp
- * Each event has a name, description, and effect
+ * Each event has a name, description, and effect. Its rarity sets how likely
+ * it is to be picked (see rarityWeights below).
  */
 
 export const randomEvents = [
@@ -11,7 +12,7 @@ export const randomEvents = [
     description:
       "You woke up with a terrible cold and can barely get out of bed.",
     type: "negative",
-    rarity: "rare", // 5% chance
+    rarity: "rare",
     effect: {
       actionsLost: "all",
       energyChange: -20,
@@ -24,7 +25,7 @@ export const randomEvents = [
     name: "Train Delay",
     description: "Signal failures have caused major delays on your commute.",
     type: "negative",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: 2,
       energyChange: -5,
@@ -37,7 +38,7 @@ export const randomEvents = [
     name: "Computer Issues",
     description: "Your laptop battery died and you forgot your charger.",
     type: "negative",
-    rarity: "common", // 15% chance
+    rarity: "common",
     effect: {
       actionsLost: 2,
       energyChange: -10,
@@ -50,7 +51,7 @@ export const randomEvents = [
     name: "Restless Night",
     description: "You had trouble sleeping last night. You feel tired.",
     type: "negative",
-    rarity: "common", // 15% chance
+    rarity: "common",
     effect: {
       actionsLost: 0,
       energyChange: -15,
@@ -63,7 +64,7 @@ export const randomEvents = [
     name: "Missed Alarm",
     description: "You slept through your alarm and had to rush to class.",
     type: "negative",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: 3,
       energyChange: -10,
@@ -77,12 +78,12 @@ export const randomEvents = [
     description:
       "The cohort is divided over the best approach to a project. Tensions are high.",
     type: "negative",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: 0,
       energyChange: -5,
       skillChange: 0,
-      bondsChange: -10, // Bonus to all social bonds
+      bondsChange: -10, // Penalty to all social bonds
       bondsChangeType: "all",
     },
   },
@@ -92,7 +93,7 @@ export const randomEvents = [
     description:
       "Your internet connection is unstable today. Video calls keep dropping and pushing code to GitHub is a nightmare.",
     type: "negative",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: 2,
       energyChange: -10,
@@ -106,7 +107,7 @@ export const randomEvents = [
     description:
       "Today's coding assignment is especially challenging. Your brain hurts from the mental gymnastics required.",
     type: "negative",
-    rarity: "common", // 15% chance
+    rarity: "common",
     effect: {
       actionsLost: 0,
       energyChange: -15,
@@ -120,7 +121,7 @@ export const randomEvents = [
     description:
       "Your instructor is out sick today. The substitute isn't as familiar with the material, making today's lesson confusing.",
     type: "negative",
-    rarity: "rare", // 5% chance
+    rarity: "rare",
     effect: {
       actionsLost: 0,
       energyChange: -10,
@@ -137,7 +138,7 @@ export const randomEvents = [
     description:
       "It's a beautiful sunny day and the whole cohort goes for drinks after class.",
     type: "positive",
-    rarity: "common", // 15% chance
+    rarity: "common",
     effect: {
       actionsLost: 0,
       energyChange: -5,
@@ -152,7 +153,7 @@ export const randomEvents = [
     description:
       "Something clicked in your brain! You now understand a concept that was confusing you.",
     type: "positive",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: 0,
       energyChange: 0,
@@ -166,7 +167,7 @@ export const randomEvents = [
     description:
       "A local coffee shop was giving out free samples near the bootcamp.",
     type: "positive",
-    rarity: "common", // 15% chance
+    rarity: "common",
     effect: {
       actionsLost: 0,
       energyChange: 15,
@@ -179,7 +180,7 @@ export const randomEvents = [
     name: "Productive Morning",
     description: "You woke up early and feel exceptionally refreshed today.",
     type: "positive",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: -1, // Gain an extra action
       energyChange: 10,
@@ -193,7 +194,7 @@ export const randomEvents = [
     description:
       "Your team completed a mini-project with flying colors! Everyone's excited.",
     type: "positive",
-    rarity: "rare", // 5% chance
+    rarity: "rare",
     effect: {
       actionsLost: 0,
       energyChange: 0,
@@ -208,7 +209,7 @@ export const randomEvents = [
     description:
       "A successful tech entrepreneur visited your bootcamp today and shared inspiring stories. You feel motivated!",
     type: "positive",
-    rarity: "rare", // 5% chance
+    rarity: "rare",
     effect: {
       actionsLost: 0,
       energyChange: 20,
@@ -223,7 +224,7 @@ export const randomEvents = [
     description:
       "You fixed a bug that had been plaguing your code for days. The relief and satisfaction are tremendous!",
     type: "positive",
-    rarity: "common", // 15% chance
+    rarity: "common",
     effect: {
       actionsLost: -1, // Gain an extra action from the efficiency
       energyChange: 5,
@@ -237,7 +238,7 @@ export const randomEvents = [
     description:
       "A senior developer volunteered to mentor your cohort today, providing valuable industry insights and tips.",
     type: "positive",
-    rarity: "uncommon", // 10% chance
+    rarity: "uncommon",
     effect: {
       actionsLost: 0,
       energyChange: 5,
@@ -257,30 +258,23 @@ export function shouldTriggerEvent(chance = 30) {
   return Math.random() * 100 < chance;
 }
 
+// Relative likelihood of each rarity (higher = more common)
+const rarityWeights = {
+  common: 3,
+  uncommon: 2,
+  rare: 1,
+};
+
+// Each event appears in the pool once per point of weight, so picking a
+// random slot from the pool gives the weighted odds.
+const eventPool = randomEvents.flatMap((event) =>
+  Array(rarityWeights[event.rarity] || 1).fill(event)
+);
+
 /**
  * Gets a random event based on rarity weights
  * @returns {object} - Random event object
  */
 export function getRandomEvent() {
-  // Define rarity weights (higher = more common)
-  const rarityWeights = {
-    common: 3,
-    uncommon: 2,
-    rare: 1,
-  };
-
-  // Calculate weighted pool of events
-  const eventPool = [];
-
-  randomEvents.forEach((event) => {
-    // Add the event to the pool multiple times based on its rarity weight
-    const weight = rarityWeights[event.rarity] || 1;
-    for (let i = 0; i < weight; i++) {
-      eventPool.push(event);
-    }
-  });
-
-  // Pick a random event from the weighted pool
-  const randomIndex = Math.floor(Math.random() * eventPool.length);
-  return eventPool[randomIndex];
+  return eventPool[Math.floor(Math.random() * eventPool.length)];
 }

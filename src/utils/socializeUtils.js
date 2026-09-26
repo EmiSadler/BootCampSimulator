@@ -1,3 +1,8 @@
+import { clamp } from "./helpers";
+
+// Bonds can go negative (enemies) but are capped at -100 and +100
+export const clampBond = (bond) => clamp(bond, -100, 100);
+
 // List of possible social activities
 export const possibleActivities = [
   { id: 1, name: "Chat over a cup of tea", energyCost: 3, bondIncrease: 8 },
@@ -30,7 +35,8 @@ export const possibleActivities = [
 /**
  * Picks a random person from the cohort to socialize with
  * @param {object} cohortBonds - The social bonds object
- * @returns {object} - The selected person's info
+ * @param {object[]} cohortMembers - Cohort member details, matched to bonds by name
+ * @returns {object} - The selected person's info plus their current bondValue
  */
 export function pickRandomPersonToSocialize(cohortBonds, cohortMembers) {
   const cohortNames = Object.keys(cohortBonds);
@@ -57,14 +63,10 @@ export function pickRandomPersonToSocialize(cohortBonds, cohortMembers) {
  */
 export function updateBondWithPerson(socialBonds, personName, bondChange) {
   const currentBond = socialBonds[personName] || 0;
-  const newBond = currentBond + bondChange;
-
-  // Bonds can go negative (enemies) but are capped at -100 and +100
-  const cappedBond = Math.max(-100, Math.min(100, newBond));
 
   return {
     ...socialBonds,
-    [personName]: cappedBond,
+    [personName]: clampBond(currentBond + bondChange),
   };
 }
 

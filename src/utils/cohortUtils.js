@@ -1,5 +1,6 @@
 import possibleCohortMembers from "../data/cohortData";
 import { possibleActivities } from "./socializeUtils";
+import { shuffle } from "./helpers";
 
 /**
  * Generates a random cohort of bootcamp classmates with preferences
@@ -9,9 +10,7 @@ import { possibleActivities } from "./socializeUtils";
  */
 export function generateRandomCohort(minSize = 5, maxSize = 10) {
   // Shuffle the array of possible cohort members
-  const shuffledMembers = [...possibleCohortMembers].sort(
-    () => 0.5 - Math.random()
-  );
+  const shuffledMembers = shuffle(possibleCohortMembers);
 
   // Generate a random cohort size between minSize and maxSize
   const cohortSize =
@@ -22,12 +21,9 @@ export function generateRandomCohort(minSize = 5, maxSize = 10) {
 
   // Generate random likes and dislikes for each cohort member
   const membersWithPreferences = selectedMembers.map((member) => {
-    // Create a copy of all possible activity IDs
-    const allActivityIds = possibleActivities.map((activity) => activity.id);
-
-    // Shuffle the activity IDs
-    const shuffledActivities = [...allActivityIds].sort(
-      () => 0.5 - Math.random()
+    // Shuffle all possible activity IDs
+    const shuffledActivities = shuffle(
+      possibleActivities.map((activity) => activity.id)
     );
 
     // Assign 3-5 random likes
@@ -55,36 +51,5 @@ export function generateRandomCohort(minSize = 5, maxSize = 10) {
   return {
     members: membersWithPreferences,
     bonds: cohort,
-  };
-}
-
-/**
- * Get full details for a cohort member by name
- * @param {string} name - The name of the cohort member
- * @returns {object|null} - The cohort member object or null if not found
- */
-export function getCohortMemberDetails(name) {
-  return possibleCohortMembers.find((member) => member.name === name) || null;
-}
-
-/**
- * Updates the bond with a random cohort member
- * @param {object} currentBonds - Current social bonds object
- * @param {number} bondIncrease - Amount to increase the bond by (default: 10)
- * @returns {object} - Updated bonds and the name of the person whose bond increased
- */
-export function socializeWithRandomPerson(currentBonds, bondIncrease = 10) {
-  const cohortNames = Object.keys(currentBonds);
-  const randomPerson =
-    cohortNames[Math.floor(Math.random() * cohortNames.length)];
-
-  const updatedBonds = {
-    ...currentBonds,
-    [randomPerson]: currentBonds[randomPerson] + bondIncrease,
-  };
-
-  return {
-    bonds: updatedBonds,
-    person: randomPerson,
   };
 }
