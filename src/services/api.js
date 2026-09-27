@@ -1,7 +1,9 @@
 // Use environment variable for API URL, with fallback for development
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
-const getToken = () => localStorage.getItem("access_token");
+const TOKEN_KEY = "access_token";
+
+const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 const authHeaders = (token) => ({
   Authorization: `Bearer ${token}`,
@@ -52,7 +54,7 @@ export const gameAPI = {
 
       // If token is invalid, remove it
       if (response.status === 401) {
-        localStorage.removeItem("token");
+        localStorage.removeItem(TOKEN_KEY);
       }
 
       return null;
@@ -93,7 +95,7 @@ export const gameAPI = {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem(TOKEN_KEY, data.access_token);
         console.log("Login successful");
         return true;
       } else {
@@ -108,7 +110,7 @@ export const gameAPI = {
 
   // Logout user
   logout: () => {
-    localStorage.removeItem("access_token");
+    localStorage.removeItem(TOKEN_KEY);
   },
 
   // Save game progress

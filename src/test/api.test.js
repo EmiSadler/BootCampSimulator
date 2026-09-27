@@ -171,11 +171,22 @@ describe("Game API", () => {
       expect(global.fetch).not.toHaveBeenCalled();
     });
 
-    it("returns null when the token is rejected (401)", async () => {
+    it("returns null and clears the stored token when it is rejected (401)", async () => {
       withToken("expired-token");
       mockFetch({ detail: "Token expired" }, 401);
 
       expect(await gameAPI.getCurrentUser()).toBeNull();
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith("access_token");
+      expect(mockLocalStorage.removeItem).not.toHaveBeenCalledWith("token");
+    });
+
+    it("keeps the stored token on other server errors", async () => {
+      withToken();
+      mockFetch({}, 500);
+
+      await gameAPI.getCurrentUser();
+
+      expect(mockLocalStorage.removeItem).not.toHaveBeenCalled();
     });
 
     it("returns null on other server errors", async () => {
