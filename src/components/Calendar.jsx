@@ -1,7 +1,7 @@
 import "../css/Calendar.css";
-import { useState, useEffect } from "react";
+import { isWeekend } from "../utils/weekendChecker";
 
-function Calendar({ day, actionsRemaining, onEndDay, page }) {
+function Calendar({ day, actionsRemaining, onEndDay }) {
   // Calculate current month based on game day
   // Assuming game starts on day 1 of month 1 (Monday)
   const monthNames = [
@@ -30,7 +30,7 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
 
   // Calculate day of week (0-6, where 0 is Monday in our bootcamp calendar)
   const dayOfWeek = (gameDay - 1) % 7;
-  const isWeekend = dayOfWeek >= 5; // 5 = Saturday, 6 = Sunday
+  const isCurrentDayWeekend = isWeekend(gameDay);
   const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // Generate days for current month view
@@ -47,14 +47,9 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
 
     // Generate all days in the month with correct weekends
     for (let i = 1; i <= daysInMonth; i++) {
-      // Calculate actual day of the week for this date
-      const thisDayOfWeek = (firstDayOfWeek + i - 1) % 7;
-      const isWeekendDay = thisDayOfWeek >= 5;
-
       days.push({
         dayNum: i,
-        isWeekend: isWeekendDay,
-        dayOfWeek: thisDayOfWeek,
+        isWeekend: isWeekend(firstDayOfMonth + i - 1),
       });
     }
 
@@ -72,7 +67,7 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
         <div className="calendar-info">
           <p>Bootcamp Day: {gameDay}</p>
           <p>Today: {dayNames[dayOfWeek]}</p>
-          {!isWeekend ? (
+          {!isCurrentDayWeekend ? (
             <p>Actions: {actionsRemaining}/8</p>
           ) : (
             <p className="weekend-label">No Bootcamp</p>
@@ -82,16 +77,14 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
 
       <div className="calendar-grid">
         {/* Day names header - starting with Monday for bootcamp context */}
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-          (dayName, index) => (
-            <div
-              key={`header-${index}`}
-              className={`calendar-day-name ${index >= 5 ? "weekend" : ""}`}
-            >
-              {dayName}
-            </div>
-          )
-        )}
+        {dayNames.map((dayName, index) => (
+          <div
+            key={`header-${index}`}
+            className={`calendar-day-name ${index >= 5 ? "weekend" : ""}`}
+          >
+            {dayName}
+          </div>
+        ))}
 
         {/* Empty days to align first day of month with correct day of week */}
         {Array.from({ length: emptyDays }).map((_, i) => (
@@ -99,12 +92,12 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
         ))}
 
         {/* Calendar days */}
-        {calendarDays.map(({ dayNum, isWeekend }) => (
+        {calendarDays.map(({ dayNum, isWeekend: isWeekendDay }) => (
           <div
             key={`day-${dayNum}`}
             className={`calendar-day ${
               dayNum === currentDayOfMonth ? "current" : ""
-            } ${isWeekend ? "weekend" : ""}`}
+            } ${isWeekendDay ? "weekend" : ""}`}
           >
             {dayNum}
           </div>
@@ -113,7 +106,7 @@ function Calendar({ day, actionsRemaining, onEndDay, page }) {
 
       <div className="calendar-actions">
         <button onClick={onEndDay} className="end-day-btn">
-          {isWeekend ? "Skip to Monday" : "End Day Early"}
+          {isCurrentDayWeekend ? "Skip to Monday" : "End Day Early"}
         </button>
       </div>
     </div>

@@ -191,7 +191,7 @@ function LandingPage({ onStartGame }) {
                   </div>
                 </div>
                 <div className="tab-image">
-                  <Calendar page="LandingPage" day={1} />
+                  <Calendar day={1} />
                 </div>
               </div>
             </div>
