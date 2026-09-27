@@ -1,4 +1,3 @@
-import React from "react";
 import "../css/LogoutButton.css";
 
 function LogoutButton({ onClick }) {
