@@ -1,3 +1,5 @@
+@import "./shared.css";
+
 .day-summary-modal-overlay {
   position: fixed;
   top: 0;
@@ -119,26 +121,6 @@
 .next-day-button:hover {
   background-color: #303f9f;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 @media (max-width: 480px) {
