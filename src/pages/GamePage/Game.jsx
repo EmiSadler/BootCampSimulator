@@ -55,7 +55,7 @@ function Game({ onLogout, onLogoClick }) {
   const [pythonStudyLevel, setPythonStudyLevel] = useState(0);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [lastCodingActivityDay, setLastCodingActivityDay] = useState(1);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState();
 
   // SINGLE saveGameProgress function
   const saveGameProgress = async () => {
@@ -146,8 +146,12 @@ function Game({ onLogout, onLogoClick }) {
   // Restart game function
   const handleRestartGame = async () => {
     try {
-      // Delete saved progress from backend
-      const success = await gameAPI.deleteProgress();
+      // Guests have no saved progress on a backend to delete, so there is
+      // nothing to wait on; only logged-in users need the server copy
+      // cleared first.
+      const success = gameAPI.isLoggedIn()
+        ? await gameAPI.deleteProgress()
+        : true;
 
       if (success) {
         // Reset all game state to initial values
