@@ -1,3 +1,5 @@
+@import "./shared.css";
+
 .energy-modal-overlay {
   position: fixed;
   top: 0;
@@ -104,24 +106,4 @@
 
 .end-day-button:hover {
   background-color: #388e3c;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
