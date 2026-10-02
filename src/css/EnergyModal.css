@@ -39,16 +39,6 @@
   font-weight: 600;
 }
 
-.modal-close-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-}
-
 .energy-modal-body {
   padding: 25px 20px;
   text-align: center;

@@ -123,16 +123,8 @@
   padding: 0;
 }
 
-.modal-close-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
+.member-modal-header .modal-close-btn {
   font-weight: bold;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  margin: 0;
 }
 
 /* Modal body */
@@ -168,17 +160,6 @@
 .member-detail.undiscovered .detail-value {
   color: #999;
   font-style: italic;
-}
-
-.discovery-message {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #e8f5e9;
-  border-radius: 6px;
-  text-align: center;
-  color: #2e7d32;
-  font-weight: bold;
-  animation: fadeIn 0.5s ease-in;
 }
 
 .bond-value.negative {
