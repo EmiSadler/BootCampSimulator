@@ -10,13 +10,14 @@ vi.mock("../services/api", () => ({
 
 // Stub each page with buttons for the callbacks App passes in, so these
 // tests cover App's navigation and login state rather than the pages.
+// LandingPage only receives onStartGame: login/signup are disabled (see
+// the AUTH_ENABLED flag in App.jsx), so App no longer wires up its own
+// login/signup links.
 vi.mock("../pages/LandingPage/LandingPage", () => ({
-  default: ({ onStartGame, onLoginClick, onSignupClick }) => (
+  default: ({ onStartGame }) => (
     <div>
       <h1>Landing page</h1>
       <button onClick={onStartGame}>start game</button>
-      <button onClick={onLoginClick}>landing login</button>
-      <button onClick={onSignupClick}>landing signup</button>
     </div>
   ),
 }));
@@ -70,12 +71,12 @@ describe("App", () => {
   });
 
   describe("starting the game", () => {
-    it("asks a logged-out user to log in", async () => {
+    it("goes straight to the game for a guest (auth is disabled)", async () => {
       render(<App />);
 
       await click("start game");
 
-      expectPage("Login page");
+      expectPage("Game page");
     });
 
     it("goes straight to the game when a token already exists", async () => {
@@ -88,72 +89,8 @@ describe("App", () => {
     });
   });
 
-  describe("navigation between pages", () => {
-    it("opens login and signup from the landing page", async () => {
-      render(<App />);
-
-      await click("landing login");
-      expectPage("Login page");
-
-      await click("login back");
-      await click("landing signup");
-      expectPage("Signup page");
-    });
-
-    it("moves between login and signup and back to landing", async () => {
-      render(<App />);
-      await click("landing login");
-
-      await click("login to signup");
-      expectPage("Signup page");
-
-      await click("signup to login");
-      expectPage("Login page");
-
-      await click("login back");
-      expectPage("Landing page");
-
-      await click("landing signup");
-      await click("signup back");
-      expectPage("Landing page");
-    });
-  });
-
-  describe("logging in and signing up", () => {
-    it("enters the game after a successful login", async () => {
-      render(<App />);
-      await click("landing login");
-
-      await click("submit login");
-
-      expectPage("Game page");
-    });
-
-    it("enters the game after a successful signup", async () => {
-      render(<App />);
-      await click("landing signup");
-
-      await click("submit signup");
-
-      expectPage("Game page");
-    });
-
-    it("remembers the login when returning to landing and starting again", async () => {
-      render(<App />);
-      await click("landing login");
-      await click("submit login");
-
-      await click("logo");
-      expectPage("Landing page");
-
-      await click("start game");
-      expectPage("Game page");
-    });
-  });
-
   describe("logging out", () => {
     it("clears the token and returns to the landing page", async () => {
-      gameAPI.isLoggedIn.mockReturnValue(true);
       render(<App />);
       await click("start game");
 
@@ -163,21 +100,19 @@ describe("App", () => {
       expectPage("Landing page");
     });
 
-    it("asks for a login again afterwards", async () => {
-      gameAPI.isLoggedIn.mockReturnValue(true);
+    it("can start a new game again afterwards", async () => {
       render(<App />);
       await click("start game");
       await click("logout");
 
       await click("start game");
 
-      expectPage("Login page");
+      expectPage("Game page");
     });
   });
 
   describe("clicking the logo in the game", () => {
     it("returns to the landing page without logging out", async () => {
-      gameAPI.isLoggedIn.mockReturnValue(true);
       render(<App />);
       await click("start game");
 
