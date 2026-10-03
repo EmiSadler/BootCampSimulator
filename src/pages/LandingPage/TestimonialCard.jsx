@@ -3,11 +3,12 @@ function TestimonialCard({ review, name, role, avatar }) {
     <div className="testimonial-card">
       <div className="testimonial-rating">★★★★★</div>
       <p className="testimonial-text">{review}</p>
-      <div className="testimonial-author"> </div>
-      <div className="author-avatar">{avatar}</div>
-      <div className="author-info">
-        <div className="author-name">{name}</div>
-        <div className="author-title">{role}</div>
+      <div className="testimonial-author">
+        <div className="author-avatar">{avatar}</div>
+        <div className="author-info">
+          <div className="author-name">{name}</div>
+          <div className="author-title">{role}</div>
+        </div>
       </div>
     </div>
   );
